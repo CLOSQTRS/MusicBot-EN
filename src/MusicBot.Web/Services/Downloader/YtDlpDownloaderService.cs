@@ -159,17 +159,9 @@ public class YtDlpDownloaderService
         if (File.Exists(path))
         {
             var age = DateTime.UtcNow - File.GetLastWriteTimeUtc(path);
-            if (age.TotalDays < 7)
-            {
-                _logger.LogInformation("yt-dlp disponible en '{Path}' (actualizado hace {Days:F0} días)",
-                    path, age.TotalDays);
-                return;
-            }
-
-            _logger.LogInformation(
-                "yt-dlp tiene {Days:F0} días de antigüedad — actualizando automáticamente…",
-                age.TotalDays);
-            await UpdateYtDlpAsync();
+            _logger.LogInformation("yt-dlp disponible en '{Path}' (actualizado hace {Days:F0} días)",
+                path, age.TotalDays);
+            // Auto-update disabled — use the manual update button to update yt-dlp.
             return;
         }
 

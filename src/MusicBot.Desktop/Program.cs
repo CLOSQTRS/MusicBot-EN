@@ -196,7 +196,7 @@ public static class Program
 
         Log.Information("MusicBot {Version}", MusicBot.AppInfo.Version);
 
-        _ = Task.Run(() => CheckAndDownloadUpdateAsync(mgr));
+        // Auto-update check disabled.
     }
 
     private static async Task CheckAndDownloadUpdateAsync(UpdateManager mgr)
