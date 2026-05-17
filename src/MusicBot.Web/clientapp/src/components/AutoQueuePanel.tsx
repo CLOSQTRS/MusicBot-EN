@@ -48,9 +48,9 @@ export const AutoQueuePanel: React.FC<Props> = ({ nowPlaying }) => {
     try {
       const hits = await api.search(query.trim(), 10);
       setResults(hits);
-      if (hits.length === 0) setSearchMsg("Sin resultados");
+      if (hits.length === 0) setSearchMsg("No results");
     } catch {
-      setSearchMsg("Error al buscar");
+      setSearchMsg("Error searching");
     } finally {
       setSearching(false);
     }
@@ -60,10 +60,10 @@ export const AutoQueuePanel: React.FC<Props> = ({ nowPlaying }) => {
     if (!currentSong) return;
     try {
       await api.addAutoQueueSong(currentSong);
-      setAddMsg(`✓ "${currentSong.title}" agregada`);
+      setAddMsg(`✓ "${currentSong.title}" added`);
       load();
     } catch (e: unknown) {
-      setAddMsg(e instanceof Error ? e.message : "Error al agregar");
+      setAddMsg(e instanceof Error ? e.message : "Error adding");
     }
     setTimeout(() => setAddMsg(""), 3000);
   };
@@ -71,10 +71,10 @@ export const AutoQueuePanel: React.FC<Props> = ({ nowPlaying }) => {
   const handleAdd = async (song: Song) => {
     try {
       await api.addAutoQueueSong(song);
-      setAddMsg(`✓ "${song.title}" agregada`);
+      setAddMsg(`✓ "${song.title}" added`);
       load();
     } catch (e: unknown) {
-      setAddMsg(e instanceof Error ? e.message : "Error al agregar");
+      setAddMsg(e instanceof Error ? e.message : "Error adding");
     }
     setTimeout(() => setAddMsg(""), 3000);
   };
@@ -97,11 +97,11 @@ export const AutoQueuePanel: React.FC<Props> = ({ nowPlaying }) => {
     setImportMsg("");
     try {
       const res = await api.importAutoQueue(playlistUrl.trim());
-      setImportMsg(`✓ ${res.added} canciones agregadas de ${res.total}`);
+      setImportMsg(`✓ ${res.added} songs added from ${res.total}`);
       setPlaylistUrl("");
       load();
     } catch (ex: unknown) {
-      setImportMsg(ex instanceof Error ? ex.message : "Error al importar");
+      setImportMsg(ex instanceof Error ? ex.message : "Error importing");
     } finally {
       setImporting(false);
     }
@@ -110,16 +110,16 @@ export const AutoQueuePanel: React.FC<Props> = ({ nowPlaying }) => {
   return (
     <div className="autoqueue-panel">
       <div className="autoqueue-header">
-        <span className="autoqueue-count">{songs.length} / 100 canciones en el pool</span>
+        <span className="autoqueue-count">{songs.length} / 100 songs in pool</span>
         {songs.length > 0 && (
           confirm ? (
             <span className="autoqueue-confirm">
-              ¿Limpiar todo?{" "}
-              <button className="btn btn-sm btn-danger" onClick={handleClear}>Sí</button>{" "}
+              Clear all?{" "}
+              <button className="btn btn-sm btn-danger" onClick={handleClear}>Yes</button>{" "}
               <button className="btn btn-sm btn-secondary" onClick={() => setConfirm(false)}>No</button>
             </span>
           ) : (
-            <button className="btn btn-sm btn-danger-outline" onClick={() => setConfirm(true)}>Limpiar</button>
+            <button className="btn btn-sm btn-danger-outline" onClick={() => setConfirm(true)}>Clear</button>
           )
         )}
       </div>
@@ -127,7 +127,7 @@ export const AutoQueuePanel: React.FC<Props> = ({ nowPlaying }) => {
       {/* Current song shortcut */}
       {currentSong && (
         <div className="autoqueue-add-section">
-          <div className="queue-section-label">Canción en curso</div>
+          <div className="queue-section-label">Current song</div>
           <div className="autoqueue-current-row">
             {currentSong.coverUrl && (
               <img src={currentSong.coverUrl} alt="" className="autoqueue-cover" />
@@ -136,7 +136,7 @@ export const AutoQueuePanel: React.FC<Props> = ({ nowPlaying }) => {
               <span className="autoqueue-title">{currentSong.title}</span>
               <span className="autoqueue-artist">{currentSong.artist} · {formatDuration(currentSong.durationMs)}</span>
             </div>
-            <button className="btn btn-sm btn-autoqueue" onClick={handleAddCurrentSong}>+ AutoCola</button>
+            <button className="btn btn-sm btn-autoqueue" onClick={handleAddCurrentSong}>+ AutoQueue</button>
           </div>
           {addMsg && <div className="form-message" style={{ marginTop: 6 }}>{addMsg}</div>}
         </div>
@@ -144,18 +144,18 @@ export const AutoQueuePanel: React.FC<Props> = ({ nowPlaying }) => {
 
       {/* Search to add */}
       <div className="autoqueue-add-section">
-        <div className="queue-section-label">Buscar canción</div>
+        <div className="queue-section-label">Search song</div>
         <form className="form-row" onSubmit={handleSearch}>
           <input
             type="text"
             className="input"
-            placeholder="Nombre, artista…"
+            placeholder="Name, artist…"
             value={query}
             onChange={e => { setQuery(e.target.value); setSearchMsg(""); }}
             autoComplete="off"
           />
           <button type="submit" className="btn btn-primary" style={{ whiteSpace: "nowrap" }} disabled={searching || !query.trim()}>
-            {searching ? "Buscando…" : "Buscar"}
+            {searching ? "Searching…" : "Search"}
           </button>
         </form>
 
@@ -179,29 +179,29 @@ export const AutoQueuePanel: React.FC<Props> = ({ nowPlaying }) => {
 
       {/* Import playlist */}
       <div className="autoqueue-add-section">
-        <div className="queue-section-label">Importar playlist</div>
+        <div className="queue-section-label">Import playlist</div>
         <form className="form-row" onSubmit={handleImport}>
           <input
             type="text"
             className="input"
-            placeholder="URL de playlist YouTube o Spotify…"
+            placeholder="YouTube or Spotify playlist URL…"
             value={playlistUrl}
             onChange={e => setPlaylistUrl(e.target.value)}
             disabled={importing}
           />
           <button type="submit" className="btn btn-primary" style={{ whiteSpace: "nowrap" }} disabled={importing || !playlistUrl.trim()}>
-            {importing ? "Importando…" : "Importar"}
+            {importing ? "Importing…" : "Import"}
           </button>
         </form>
         {importMsg && <div className="form-message" style={{ marginTop: 6 }}>{importMsg}</div>}
       </div>
 
       {/* Song list */}
-      <div className="queue-section-label">Pool de canciones</div>
+      <div className="queue-section-label">Song pool</div>
       {loading ? (
-        <div className="lib-empty">Cargando…</div>
+        <div className="lib-empty">Loading…</div>
       ) : songs.length === 0 ? (
-        <div className="lib-empty">No hay canciones en el pool. Busca y agrega canciones arriba.</div>
+        <div className="lib-empty">No songs in the pool. Search and add songs above.</div>
       ) : (
         <div className="autoqueue-list">
           {songs.map(song => (
@@ -216,12 +216,12 @@ export const AutoQueuePanel: React.FC<Props> = ({ nowPlaying }) => {
               <div style={{ display: "flex", gap: 4, flexShrink: 0 }}>
                 <button
                   className="btn btn-icon"
-                  title="Agregar a cola"
+                  title="Add to queue"
                   onClick={() => api.enqueueTrack({ spotifyUri: song.spotifyUri, title: song.title, artist: song.artist, coverUrl: song.coverUrl, durationMs: song.durationMs }, "Admin").catch(() => {})}
                 >
                   <ListPlus size={14} />
                 </button>
-                <button className="btn-icon-danger" onClick={() => handleRemove(song.spotifyUri)} title="Eliminar">
+                <button className="btn-icon-danger" onClick={() => handleRemove(song.spotifyUri)} title="Remove">
                   <X size={14} />
                 </button>
               </div>

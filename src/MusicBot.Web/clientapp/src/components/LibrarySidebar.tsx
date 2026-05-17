@@ -50,16 +50,16 @@ export const LibrarySidebar: React.FC<Props> = ({ selectedId, onSelect, refreshK
     setImportMsg(null);
     try {
       const userProvidedName = importName.trim();
-      const name = userProvidedName || `Lista ${Date.now()}`;
+      const name = userProvidedName || `Playlist ${Date.now()}`;
       const p    = await api.createPlaylist(name);
       const r    = await api.importPlaylistSongs(p.id, url, userProvidedName || undefined);
-      setImportMsg({ text: `✓ ${r.added} canciones importadas${r.name ? ` · "${r.name}"` : ""}`, err: false });
+      setImportMsg({ text: `✓ ${r.added} songs imported${r.name ? ` · "${r.name}"` : ""}`, err: false });
       setImportUrl(""); setImportName("");
       await load();
       onSelect(p.id);
       setTimeout(() => { setShowImport(false); setImportMsg(null); }, 1800);
     } catch (err: unknown) {
-      setImportMsg({ text: err instanceof Error ? err.message : "Error al importar", err: true });
+      setImportMsg({ text: err instanceof Error ? err.message : "Error importing", err: true });
     } finally {
       setImporting(false);
     }
@@ -157,15 +157,15 @@ export const LibrarySidebar: React.FC<Props> = ({ selectedId, onSelect, refreshK
         <div className="lib-sidebar-item-info">
           <span className="lib-sidebar-item-name">{p.name}</span>
           <span className="lib-sidebar-item-meta">
-            {p.isActive && <span className="lib-active-badge">Activa · </span>}
-            {p.songCount} canciones
+            {p.isActive && <span className="lib-active-badge">Active · </span>}
+            {p.songCount} songs
           </span>
         </div>
       </button>
       {!p.isSystem && (
         <button
           className={`lib-sidebar-pin-btn${p.isPinned ? " pinned" : ""}`}
-          title={p.isPinned ? "Desfijar" : "Fijar"}
+          title={p.isPinned ? "Unpin" : "Pin"}
           onClick={(e) => handleTogglePin(e, p)}
         >
           <Pin size={12} />
@@ -177,18 +177,18 @@ export const LibrarySidebar: React.FC<Props> = ({ selectedId, onSelect, refreshK
   return (
     <div className="lib-sidebar">
       <div className="lib-sidebar-header">
-        <span className="lib-sidebar-title">Tu Librería</span>
+        <span className="lib-sidebar-title">Your Library</span>
         <div style={{ display: "flex", gap: 4 }}>
           <button
             className={`lib-sidebar-create-btn${showImport ? " active" : ""}`}
-            title="Importar lista de YouTube"
+            title="Import YouTube playlist"
             onClick={() => { setShowImport(v => !v); setShowForm(false); setImportMsg(null); }}
           >
             <Download size={15} />
           </button>
           <button
             className={`lib-sidebar-create-btn${showForm ? " active" : ""}`}
-            title="Crear lista"
+            title="Create playlist"
             onClick={() => { setShowForm(v => !v); setShowImport(false); }}
           >
             <Plus size={16} />
@@ -200,14 +200,14 @@ export const LibrarySidebar: React.FC<Props> = ({ selectedId, onSelect, refreshK
         <form className="lib-sidebar-create-form" onSubmit={handleCreate}>
           <input
             className="input input-sm"
-            placeholder="Nombre de la lista…"
+            placeholder="Playlist name…"
             value={newName}
             onChange={e => setNewName(e.target.value)}
             autoFocus
             disabled={creating}
           />
           <button type="submit" className="btn btn-primary btn-sm" disabled={creating || !newName.trim()}>
-            Crear
+            Create
           </button>
         </form>
       )}
@@ -216,7 +216,7 @@ export const LibrarySidebar: React.FC<Props> = ({ selectedId, onSelect, refreshK
         <form className="lib-sidebar-create-form lib-sidebar-import-form" onSubmit={handleImport}>
           <input
             className="input input-sm"
-            placeholder="URL de YouTube o YouTube Music…"
+            placeholder="YouTube or YouTube Music URL…"
             value={importUrl}
             onChange={e => setImportUrl(e.target.value)}
             autoFocus
@@ -224,7 +224,7 @@ export const LibrarySidebar: React.FC<Props> = ({ selectedId, onSelect, refreshK
           />
           <input
             className="input input-sm"
-            placeholder="Nombre (opcional)"
+            placeholder="Name (optional)"
             value={importName}
             onChange={e => setImportName(e.target.value)}
             disabled={importing}
@@ -233,7 +233,7 @@ export const LibrarySidebar: React.FC<Props> = ({ selectedId, onSelect, refreshK
             <span className={`lib-import-msg${importMsg.err ? " err" : ""}`}>{importMsg.text}</span>
           )}
           <button type="submit" className="btn btn-primary btn-sm" disabled={importing || !importUrl.trim()}>
-            {importing ? "Importando…" : "Importar"}
+            {importing ? "Importing…" : "Import"}
           </button>
         </form>
       )}
@@ -241,13 +241,13 @@ export const LibrarySidebar: React.FC<Props> = ({ selectedId, onSelect, refreshK
       <div className="lib-sidebar-list">
         {playlists.length === 0 ? (
           <div className="lib-sidebar-empty">
-            Crea tu primera lista con el botón +
+            Create your first playlist with the + button
           </div>
         ) : (
           <>
             {pinned.length > 0 && (
               <>
-                <div className="lib-sidebar-section-label">Fijadas</div>
+                <div className="lib-sidebar-section-label">Pinned</div>
                 {pinned.map(p => renderItem(p, true))}
                 {unpinned.length > 0 && <div className="lib-sidebar-section-divider" />}
               </>

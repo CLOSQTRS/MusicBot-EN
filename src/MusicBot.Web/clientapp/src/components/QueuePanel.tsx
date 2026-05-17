@@ -34,7 +34,7 @@ const NowPlayingView: React.FC<{ nowPlaying: NowPlayingState | null }> = ({ nowP
   if (!song) return (
     <div className="np-view-empty">
       <div className="np-view-empty-icon"><Music size={40} /></div>
-      <div>No hay canción en reproducción</div>
+      <div>No song playing</div>
     </div>
   );
 
@@ -51,7 +51,7 @@ const NowPlayingView: React.FC<{ nowPlaying: NowPlayingState | null }> = ({ nowP
           </div>
         )}
         {isPlaylist && (
-          <div className="np-view-playlist-badge">De tu lista de reproducción</div>
+          <div className="np-view-playlist-badge">From your playlist</div>
         )}
       </div>
       <div className="np-view-duration">{formatDuration(song.durationMs)}</div>
@@ -83,11 +83,11 @@ const DevicesView: React.FC = () => {
 
   return (
     <div className="devices-view">
-      <div className="devices-view-title">Dispositivo de audio</div>
+      <div className="devices-view-title">Audio device</div>
       {loading ? (
-        <div className="devices-view-empty">Cargando…</div>
+        <div className="devices-view-empty">Loading…</div>
       ) : devices.length === 0 ? (
-        <div className="devices-view-empty">No se detectaron dispositivos</div>
+        <div className="devices-view-empty">No devices detected</div>
       ) : (
         <div className="devices-list">
           {devices.map(d => (
@@ -101,7 +101,7 @@ const DevicesView: React.FC = () => {
               </span>
               <div className="devices-item-info">
                 <span className="devices-item-name">{d.name}</span>
-                {d.isDefault && <span className="devices-item-default">Predeterminado</span>}
+                {d.isDefault && <span className="devices-item-default">Default</span>}
               </div>
               {activeId === d.id && (
                 <span className="devices-item-check">
@@ -113,7 +113,7 @@ const DevicesView: React.FC = () => {
           {activeId !== null && (
             <button className="devices-item devices-item-reset" onClick={() => select(null)}>
               <span className="devices-item-icon"><RotateCcw size={15} /></span>
-              <span>Usar predeterminado del sistema</span>
+              <span>Use system default</span>
             </button>
           )}
         </div>
@@ -134,8 +134,8 @@ const HistoryView: React.FC<{ refreshKey: number; likedUris?: Set<string>; onTog
     api.getHistory(100).then(setHistory).catch(() => {}).finally(() => setLoading(false));
   }, [refreshKey]);
 
-  if (loading) return <div className="np-view-empty">Cargando…</div>;
-  if (history.length === 0) return <div className="np-view-empty">Sin historial</div>;
+  if (loading) return <div className="np-view-empty">Loading…</div>;
+  if (history.length === 0) return <div className="np-view-empty">No history</div>;
 
   return (
     <div className="queue-items-list" style={{ position: "relative" }}>
@@ -161,7 +161,7 @@ const HistoryView: React.FC<{ refreshKey: number; likedUris?: Set<string>; onTog
                 <button
                   className={`qi-like-btn${likedUris?.has(song.spotifyUri) ? " liked" : ""}`}
                   onClick={e => { e.stopPropagation(); onToggleLike(song); }}
-                  title={likedUris?.has(song.spotifyUri) ? "Guardado en Liked Songs" : "Guardar en Liked Songs"}
+                  title={likedUris?.has(song.spotifyUri) ? "Saved in Liked Songs" : "Save in Liked Songs"}
                 >
                   <Heart size={13} fill={likedUris?.has(song.spotifyUri) ? "currentColor" : "none"} />
                 </button>
@@ -169,7 +169,7 @@ const HistoryView: React.FC<{ refreshKey: number; likedUris?: Set<string>; onTog
               <button
                 className="qi-menu-btn"
                 onClick={e => { e.stopPropagation(); setMenuAnchor(v => v?.id === item.id ? null : { id: item.id, el: e.currentTarget }); }}
-                title="Más opciones"
+                title="More options"
               ><MoreHorizontal size={15} /></button>
             </div>
             {menuAnchor?.id === item.id && (
@@ -207,7 +207,7 @@ export const QueuePanel: React.FC<Props> = ({
   const isBgUri   = (uri: string) => bgItems.some(i => i.song.spotifyUri === uri);
 
   const handleClearUserQueue = async () => {
-    const ok = await confirm({ title: "¿Limpiar la cola?", message: "Se eliminarán todas las canciones en espera. Esta acción no se puede deshacer.", confirmText: "Limpiar", danger: true });
+    const ok = await confirm({ title: "Clear queue?", message: "All waiting songs will be removed. This action cannot be undone.", confirmText: "Clear", danger: true });
     if (!ok) return;
     api.clearUserQueue().catch(console.error);
   };
@@ -224,13 +224,13 @@ export const QueuePanel: React.FC<Props> = ({
           className={`queue-panel-tab${!historyTab ? " active" : ""}`}
           onClick={() => setHistoryTab(false)}
         >
-          Cola {items.length > 0 && <span className="queue-panel-badge">{items.length}</span>}
+          Queue {items.length > 0 && <span className="queue-panel-badge">{items.length}</span>}
         </button>
         <button
           className={`queue-panel-tab${historyTab ? " active" : ""}`}
           onClick={() => setHistoryTab(true)}
         >
-          Recientes
+          Recent
         </button>
       </div>
 
@@ -242,7 +242,7 @@ export const QueuePanel: React.FC<Props> = ({
           {/* Now Playing */}
           {nowSong && (
             <div className="queue-section">
-              <div className="queue-section-label-sp">Reproduciendo ahora</div>
+              <div className="queue-section-label-sp">Now playing</div>
               <div className="queue-item-row now-playing-row">
                 {nowSong.coverUrl
                   ? <img src={nowSong.coverUrl} alt="" className="qi-cover" />
@@ -259,7 +259,7 @@ export const QueuePanel: React.FC<Props> = ({
                     <button
                       className="qi-like-btn"
                       onClick={e => { e.stopPropagation(); onToggleLike({ spotifyUri: nowSong.spotifyUri, title: nowSong.title, artist: nowSong.artist, coverUrl: nowSong.coverUrl, durationMs: nowSong.durationMs }); }}
-                      title="Guardar en Liked Songs"
+                      title="Save in Liked Songs"
                     >
                       <Heart size={13} fill="none" />
                     </button>
@@ -294,9 +294,9 @@ export const QueuePanel: React.FC<Props> = ({
           {userItems.length > 0 && (
             <div className="queue-section">
               <div className="queue-section-header">
-                <span className="queue-section-label-sp">A continuación en la cola</span>
-                <button className="queue-clear-btn" onClick={handleClearUserQueue} title="Limpiar cola">
-                  Limpiar cola
+                <span className="queue-section-label-sp">Up next</span>
+                <button className="queue-clear-btn" onClick={handleClearUserQueue} title="Clear queue">
+                  Clear queue
                 </button>
               </div>
               {userItems.map((item, i) => {
@@ -330,7 +330,7 @@ export const QueuePanel: React.FC<Props> = ({
                     onDragEnd={() => { setDragUri(null); setDropIndex(null); }}
                   >
                     {onReorder && (
-                      <span className="queue-drag-handle" title="Arrastrar para reordenar">
+                      <span className="queue-drag-handle" title="Drag to reorder">
                         <GripVertical size={14} />
                       </span>
                     )}
@@ -356,7 +356,7 @@ export const QueuePanel: React.FC<Props> = ({
                         <button
                           className={`qi-like-btn${likedUris?.has(song.spotifyUri) ? " liked" : ""}`}
                           onClick={e => { e.stopPropagation(); onToggleLike(song); }}
-                          title={likedUris?.has(song.spotifyUri) ? "Guardado en Liked Songs" : "Guardar en Liked Songs"}
+                          title={likedUris?.has(song.spotifyUri) ? "Saved in Liked Songs" : "Save in Liked Songs"}
                         >
                           <Heart size={13} fill={likedUris?.has(song.spotifyUri) ? "currentColor" : "none"} />
                         </button>
@@ -364,7 +364,7 @@ export const QueuePanel: React.FC<Props> = ({
                       <button
                         className="qi-menu-btn"
                         onClick={e => { e.stopPropagation(); setMenuAnchor(v => v?.uri === item.song.spotifyUri ? null : { uri: item.song.spotifyUri, el: e.currentTarget }); }}
-                        title="Más opciones"
+                        title="More options"
                       ><MoreHorizontal size={15} /></button>
                     </div>
                     {item.downloadError ? (
@@ -401,11 +401,11 @@ export const QueuePanel: React.FC<Props> = ({
             <div className="queue-section">
               <div className="queue-section-header">
                 <span className="queue-section-label-sp">
-                  A continuación de: <span className="queue-section-playlist-name">{activePlaylistName ?? "Tu lista"}</span>
+                  Up next from: <span className="queue-section-playlist-name">{activePlaylistName ?? "Your playlist"}</span>
                 </span>
                 {onShuffleBackground && (
-                  <button className="queue-clear-btn" onClick={onShuffleBackground} title="Aleatorizar lista de fondo">
-                    Aleatorizar
+                  <button className="queue-clear-btn" onClick={onShuffleBackground} title="Shuffle background playlist">
+                    Shuffle
                   </button>
                 )}
               </div>
@@ -439,7 +439,7 @@ export const QueuePanel: React.FC<Props> = ({
                     onDragEnd={() => { setDragUri(null); setDropIndex(null); }}
                   >
                     {onReorder && (
-                      <span className="queue-drag-handle" title="Arrastrar para reordenar">
+                      <span className="queue-drag-handle" title="Drag to reorder">
                         <GripVertical size={14} />
                       </span>
                     )}
@@ -456,7 +456,7 @@ export const QueuePanel: React.FC<Props> = ({
                         <button
                           className={`qi-like-btn${likedUris?.has(song.spotifyUri) ? " liked" : ""}`}
                           onClick={e => { e.stopPropagation(); onToggleLike(song); }}
-                          title={likedUris?.has(song.spotifyUri) ? "Guardado" : "Guardar en Liked Songs"}
+                          title={likedUris?.has(song.spotifyUri) ? "Saved in Liked Songs" : "Save in Liked Songs"}
                         >
                           <Heart size={13} fill={likedUris?.has(song.spotifyUri) ? "currentColor" : "none"} />
                         </button>
@@ -498,9 +498,9 @@ export const QueuePanel: React.FC<Props> = ({
           {!nowSong && items.length === 0 && Object.keys(downloadStates).length === 0 && (
             <div className="queue-panel-empty">
               <div style={{ opacity: 0.2, marginBottom: 10 }}><Music size={40} /></div>
-              <div>La cola está vacía</div>
+              <div>Queue is empty</div>
               <div style={{ fontSize: 12, marginTop: 6, color: "var(--text-muted)" }}>
-                Busca canciones en el panel central para agregarlas
+                Search for songs in the center panel to add them
               </div>
             </div>
           )}

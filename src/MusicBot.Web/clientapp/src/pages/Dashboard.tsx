@@ -17,10 +17,10 @@ import { api } from "../services/api";
 type AppSection = "bot" | "comunidad" | "donaciones" | "soporte";
 
 const SECTIONS: { id: AppSection; label: string; icon: React.ReactNode }[] = [
-  { id: "bot",       label: "Manager",    icon: <Bot size={13} />      },
-  { id: "comunidad", label: "Comunidad",  icon: <Users size={13} />    },
-  { id: "soporte",   label: "Soporte",    icon: <LifeBuoy size={13} /> },
-  { id: "donaciones",label: "Donaciones", icon: <Coffee size={13} />   },
+  { id: "bot",       label: "Manager",   icon: <Bot size={13} />      },
+  { id: "comunidad", label: "Community", icon: <Users size={13} />    },
+  { id: "soporte",   label: "Support",   icon: <LifeBuoy size={13} /> },
+  { id: "donaciones",label: "Donations", icon: <Coffee size={13} />   },
 ];
 
 const OVERLAY_TOKEN = "local";
@@ -31,15 +31,15 @@ function formatDownloadReason(raw: string): string {
   const msg = prefixed ? prefixed[1] : raw;
 
   // Map known yt-dlp error patterns to friendly messages
-  if (/private video/i.test(msg))           return "El video es privado";
-  if (/video unavailable/i.test(msg))       return "El video no está disponible";
-  if (/has been removed/i.test(msg))        return "El video fue eliminado";
-  if (/not available in your country/i.test(msg)) return "No disponible en tu región";
-  if (/age.?restricted/i.test(msg))         return "El video tiene restricción de edad";
-  if (/no youtube match/i.test(msg))        return "No se encontró en YouTube";
-  if (/output file not found/i.test(msg))   return "Error al procesar el archivo de audio";
-  if (/unable to download/i.test(msg))      return "No se pudo descargar el video";
-  if (/copyright/i.test(msg))               return "Bloqueado por derechos de autor";
+  if (/private video/i.test(msg))           return "The video is private";
+  if (/video unavailable/i.test(msg))       return "The video is not available";
+  if (/has been removed/i.test(msg))        return "The video was removed";
+  if (/not available in your country/i.test(msg)) return "Not available in your region";
+  if (/age.?restricted/i.test(msg))         return "The video has an age restriction";
+  if (/no youtube match/i.test(msg))        return "Not found on YouTube";
+  if (/output file not found/i.test(msg))   return "Error processing audio file";
+  if (/unable to download/i.test(msg))      return "Could not download the video";
+  if (/copyright/i.test(msg))               return "Blocked by copyright";
 
   // Return first line of the message (yt-dlp errors can be multi-line)
   return msg.split("\n")[0].trim();
@@ -122,7 +122,7 @@ export const Dashboard: React.FC = () => {
   }, []);
 
   const handleBan     = useCallback(async (uri: string, title: string, artist: string) => {
-    const ok = await confirm({ title: `Banear "${title}"`, message: "La canción no podrá volver a ser solicitada.", confirmText: "Banear", danger: true });
+    const ok = await confirm({ title: `Ban "${title}"`, message: "The song cannot be requested again.", confirmText: "Ban", danger: true });
     if (!ok) return;
     api.banSong(uri, title, artist).catch(console.error);
     api.removeQueueItem(uri).catch(console.error);
@@ -130,11 +130,11 @@ export const Dashboard: React.FC = () => {
 
   const handleVote = useCallback(async (skip: boolean) => {
     const r = await api.vote(voteUser || "Admin", skip, "web").catch(() => null);
-    showSimMsg(r ? r.message : "Error al votar");
+    showSimMsg(r ? r.message : "Error voting");
   }, [voteUser]);
 
   const handleGiftBump = useCallback(async () => {
-    if (!giftUser.trim()) { showSimMsg("Ingresa un usuario"); return; }
+    if (!giftUser.trim()) { showSimMsg("Enter a user"); return; }
     const r = await api.giftBump(giftUser.trim(), giftCoins).catch(() => null);
     showSimMsg(r ? r.message : "Error");
   }, [giftUser, giftCoins]);
@@ -174,18 +174,18 @@ export const Dashboard: React.FC = () => {
             kickStatus={kickStatus}
           />
 
-          <button className="header-icon-btn" onClick={() => setQueueToolsOpen(true)} title="Herramientas de cola"><Wrench size={15} /></button>
-          <button className="theme-toggle-btn" onClick={toggleTheme} title="Cambiar tema">
+          <button className="header-icon-btn" onClick={() => setQueueToolsOpen(true)} title="Queue tools"><Wrench size={15} /></button>
+          <button className="theme-toggle-btn" onClick={toggleTheme} title="Change theme">
             {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
           </button>
           <button className="header-icon-btn" onClick={() => api.openLog()} title="Logs"><FileText size={15} /></button>
-          <button className="header-icon-btn" onClick={() => api.openLogDir()} title="Carpeta de logs"><FolderOpen size={15} /></button>
+          <button className="header-icon-btn" onClick={() => api.openLogDir()} title="Logs folder"><FolderOpen size={15} /></button>
           <button className="header-icon-btn header-icon-btn-danger"
             onClick={async () => {
-              const ok = await confirm({ title: "¿Cerrar MusicBot?", message: "La reproducción se detendrá y la aplicación se cerrará.", confirmText: "Cerrar", danger: true });
+              const ok = await confirm({ title: "Close MusicBot?", message: "Playback will stop and the application will close.", confirmText: "Close", danger: true });
               if (ok) api.shutdown();
             }}
-            title="Cerrar"
+            title="Close"
           ><Power size={15} /></button>
         </div>
       </header>
@@ -195,12 +195,12 @@ export const Dashboard: React.FC = () => {
         <div className="download-error-stack">
           {downloadErrors.length > 1 && (
             <div className="download-error-toolbar">
-              <span className="download-error-count">{downloadErrors.length} errores</span>
+              <span className="download-error-count">{downloadErrors.length} errors</span>
               <button
                 className="download-error-dismiss-all"
                 onClick={() => downloadErrors.forEach(e => dismissDownloadError(e.id))}
               >
-                Limpiar todo
+                Clear all
               </button>
             </div>
           )}
@@ -209,7 +209,7 @@ export const Dashboard: React.FC = () => {
               <span className="download-error-icon">⚠</span>
               <div className="download-error-body">
                 <span className="download-error-text">
-                  No se pudo descargar <strong>{e.title}</strong>
+                  Could not download <strong>{e.title}</strong>
                   {e.artist ? ` · ${e.artist}` : ""}
                 </span>
                 {e.reason && (

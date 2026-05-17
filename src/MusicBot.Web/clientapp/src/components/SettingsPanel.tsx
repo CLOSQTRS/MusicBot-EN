@@ -32,7 +32,7 @@ export const SettingsPanel: React.FC<Props> = ({ settings }) => {
       const r = await api.updateYtDlp();
       setYtDlpMsg({ text: r.message, err: false });
     } catch (e: unknown) {
-      setYtDlpMsg({ text: e instanceof Error ? e.message : "Error al actualizar", err: true });
+      setYtDlpMsg({ text: e instanceof Error ? e.message : "Error updating", err: true });
     } finally {
       setYtDlpUpdating(false);
     }
@@ -43,7 +43,7 @@ export const SettingsPanel: React.FC<Props> = ({ settings }) => {
     try {
       setRelayStatus(await api.getRelayStatus());
     } catch {
-      setRelayStatus({ configured: false, reachable: false, error: "No se pudo contactar el servidor" });
+      setRelayStatus({ configured: false, reachable: false, error: "Could not contact server" });
     } finally {
       setRelayChecking(false);
     }
@@ -66,14 +66,14 @@ export const SettingsPanel: React.FC<Props> = ({ settings }) => {
 
   const handleYouTubeConnect = async () => {
     const ok = await confirm({
-      title:       "Usa una cuenta desechable",
+      title:       "Use a disposable account",
       message: (
         <>
-          Vas a iniciar sesión con una cuenta de Google. Las cookies se guardarán en disco y cualquier
-          proceso con acceso al archivo podrá impersonar esa cuenta. YouTube también puede banearla por
-          uso de yt-dlp.
+          You are about to sign in with a Google account. Cookies will be saved to disk and any
+          process with access to the file can impersonate that account. YouTube may also ban it due
+          to yt-dlp usage.
           <br/><br/>
-          Usa una cuenta nueva creada solo para esto,{" "}
+          Use a new account created only for this purpose,{" "}
           <strong style={{
             background:   "#fde047",
             color:        "#1a1a1a",
@@ -81,11 +81,11 @@ export const SettingsPanel: React.FC<Props> = ({ settings }) => {
             borderRadius: 4,
             fontWeight:   800,
           }}>
-            NUNCA tu cuenta personal
+            NEVER your personal account
           </strong>.
         </>
       ),
-      confirmText: "Entiendo el riesgo, continuar",
+      confirmText: "I understand the risk, continue",
       danger:      true,
     });
     if (!ok) return;
@@ -109,7 +109,7 @@ export const SettingsPanel: React.FC<Props> = ({ settings }) => {
   };
 
   const handleYouTubeDisconnect = async () => {
-    const ok = await confirm({ title: "¿Desconectar YouTube?", message: "Se eliminarán las cookies guardadas. Las descargas que requieran autenticación volverán a fallar con 'Sign in to confirm you're not a bot'.", confirmText: "Desconectar", danger: true });
+    const ok = await confirm({ title: "Disconnect YouTube?", message: "Saved cookies will be deleted. Downloads requiring authentication will fail again with 'Sign in to confirm you're not a bot'.", confirmText: "Disconnect", danger: true });
     if (!ok) return;
     setYtBusy(true);
     try {
@@ -143,7 +143,7 @@ export const SettingsPanel: React.FC<Props> = ({ settings }) => {
   };
 
   const handleSpotifyDisconnect = async () => {
-    const ok = await confirm({ title: "¿Desconectar Spotify?", message: "Deberás volver a autorizar la aplicación para usar funciones de Spotify.", confirmText: "Desconectar", danger: true });
+    const ok = await confirm({ title: "Disconnect Spotify?", message: "You will need to re-authorize the app to use Spotify features.", confirmText: "Disconnect", danger: true });
     if (!ok) return;
     setSpotifyBusy(true);
     try {
@@ -174,36 +174,36 @@ export const SettingsPanel: React.FC<Props> = ({ settings }) => {
     <>{confirmModal}
     <div className="settings-panel">
       <div className="settings-section">
-        <div className="settings-section-title">Cola de reproducción</div>
+        <div className="settings-section-title">Playback queue</div>
 
         <label className="settings-row">
-          <span className="settings-label">Tamaño máximo de la cola</span>
+          <span className="settings-label">Maximum queue size</span>
           <input
             type="number" min={1} max={500}
             className="input settings-input-sm"
             value={form.maxQueueSize}
             onChange={e => set("maxQueueSize", Number(e.target.value))}
           />
-          <span className="settings-unit">canciones</span>
+          <span className="settings-unit">songs</span>
         </label>
 
         <label className="settings-row">
-          <span className="settings-label">Máx. canciones por usuario</span>
+          <span className="settings-label">Max. songs per user</span>
           <input
             type="number" min={1} max={50}
             className="input settings-input-sm"
             value={form.maxSongsPerUser}
             onChange={e => set("maxSongsPerUser", Number(e.target.value))}
           />
-          <span className="settings-unit">por usuario</span>
+          <span className="settings-unit">per user</span>
         </label>
       </div>
 
       <div className="settings-section">
-        <div className="settings-section-title">Votación de skip</div>
+        <div className="settings-section-title">Skip voting</div>
 
         <label className="settings-row settings-row-toggle">
-          <span className="settings-label">Habilitar votación de skip al inicio de canción</span>
+          <span className="settings-label">Enable skip voting at song start</span>
           <div
             className={`settings-toggle${form.votingEnabled ? " on" : ""}`}
             onClick={() => set("votingEnabled", !form.votingEnabled)}
@@ -212,15 +212,15 @@ export const SettingsPanel: React.FC<Props> = ({ settings }) => {
           </div>
         </label>
         <p className="settings-hint">
-          Cuando está activa, cada canción abre una votación de 30 segundos en el chat (!si = skip · !no = quedar).
+          When active, each song opens a 30-second vote in chat (!si = skip · !no = keep).
         </p>
       </div>
 
       <div className="settings-section">
-        <div className="settings-section-title">Chequeo de presencia</div>
+        <div className="settings-section-title">Presence check</div>
 
         <label className="settings-row settings-row-toggle">
-          <span className="settings-label">Habilitar chequeo de presencia al iniciar canción</span>
+          <span className="settings-label">Enable presence check at song start</span>
           <div
             className={`settings-toggle${form.presenceCheckEnabled ? " on" : ""}`}
             onClick={() => set("presenceCheckEnabled", !form.presenceCheckEnabled)}
@@ -230,7 +230,7 @@ export const SettingsPanel: React.FC<Props> = ({ settings }) => {
         </label>
 
         <label className="settings-row">
-          <span className="settings-label">Tiempo de aviso previo</span>
+          <span className="settings-label">Advance warning time</span>
           <input
             type="number" min={5} max={120}
             className="input settings-input-sm"
@@ -238,11 +238,11 @@ export const SettingsPanel: React.FC<Props> = ({ settings }) => {
             onChange={e => set("presenceCheckWarningSeconds", Number(e.target.value))}
             disabled={!form.presenceCheckEnabled}
           />
-          <span className="settings-unit">segundos antes</span>
+          <span className="settings-unit">seconds before</span>
         </label>
 
         <label className="settings-row">
-          <span className="settings-label">Tiempo para confirmar al iniciar</span>
+          <span className="settings-label">Confirmation time at start</span>
           <input
             type="number" min={5} max={120}
             className="input settings-input-sm"
@@ -250,19 +250,19 @@ export const SettingsPanel: React.FC<Props> = ({ settings }) => {
             onChange={e => set("presenceCheckConfirmSeconds", Number(e.target.value))}
             disabled={!form.presenceCheckEnabled}
           />
-          <span className="settings-unit">segundos</span>
+          <span className="settings-unit">seconds</span>
         </label>
 
         <p className="settings-hint">
-          Se avisa al solicitante N segundos antes y se espera confirmación con <code>!aqui</code> al iniciar. Si no confirma, la canción se saltea. Otros usuarios pueden usar <code>!keep</code> para salvarla.
+          The requester is notified N seconds before and confirmation with <code>!aqui</code> is expected at start. If they do not confirm, the song is skipped. Other users can use <code>!keep</code> to save it.
         </p>
       </div>
 
       <div className="settings-section">
-        <div className="settings-section-title">Descargas</div>
+        <div className="settings-section-title">Downloads</div>
 
         <label className="settings-row settings-row-toggle">
-          <span className="settings-label">Guardar archivos descargados permanentemente</span>
+          <span className="settings-label">Save downloaded files permanently</span>
           <div
             className={`settings-toggle${form.saveDownloads ? " on" : ""}`}
             onClick={() => set("saveDownloads", !form.saveDownloads)}
@@ -271,38 +271,38 @@ export const SettingsPanel: React.FC<Props> = ({ settings }) => {
           </div>
         </label>
         <p className="settings-hint">
-          Si está desactivado, los archivos se eliminan automáticamente al terminar de reproducirse.
+          If disabled, files are automatically deleted after they finish playing.
         </p>
       </div>
 
       <div className="settings-section">
         <div className="settings-section-title">Spotify</div>
         <div className="settings-row">
-          <span className="settings-label">Estado de conexión</span>
+          <span className="settings-label">Connection status</span>
           <span style={{ fontWeight: 600, color: spotifyConnected ? "var(--color-success, #1db954)" : "var(--color-muted, #888)" }}>
-            {spotifyConnected === null ? "Comprobando…" : spotifyConnected ? "Conectado" : "Desconectado"}
+            {spotifyConnected === null ? "Checking…" : spotifyConnected ? "Connected" : "Disconnected"}
           </span>
         </div>
         <div className="settings-row" style={{ gap: 8 }}>
           {spotifyConnected
             ? <button className="btn btn-sm btn-danger" onClick={handleSpotifyDisconnect} disabled={spotifyBusy}>
-                {spotifyBusy ? "Desconectando…" : "Desconectar Spotify"}
+                {spotifyBusy ? "Disconnecting…" : "Disconnect Spotify"}
               </button>
             : <button className="btn btn-sm btn-primary" onClick={handleSpotifyConnect} disabled={spotifyBusy}>
-                {spotifyBusy ? "Abriendo…" : "Conectar Spotify"}
+                {spotifyBusy ? "Opening…" : "Connect Spotify"}
               </button>
           }
         </div>
         <p className="settings-hint">
-          Si el import de playlists devuelve error 403, desconecta y vuelve a conectar para renovar los permisos.
+          If playlist import returns error 403, disconnect and reconnect to renew permissions.
         </p>
       </div>
 
       <div className="settings-section">
-        <div className="settings-section-title">YouTube (cookies para descargas)</div>
+        <div className="settings-section-title">YouTube (cookies for downloads)</div>
 
         <label className="settings-row settings-row-toggle">
-          <span className="settings-label">Usar cookies de YouTube en yt-dlp</span>
+          <span className="settings-label">Use YouTube cookies in yt-dlp</span>
           <div
             className={`settings-toggle${ytAuth?.enabled ? " on" : ""}`}
             onClick={() => !ytBusy && handleYouTubeToggle()}
@@ -311,48 +311,48 @@ export const SettingsPanel: React.FC<Props> = ({ settings }) => {
           </div>
         </label>
         <p className="settings-hint">
-          Cuando está activo y tienes una sesión conectada, yt-dlp usa tus cookies para evitar el bloqueo
-          <em> "Sign in to confirm you're not a bot"</em> y errores HTTP 429. Las cookies se guardan localmente en
-          <code> %LOCALAPPDATA%/MusicBot/youtube_cookies.txt</code> y nunca se envían a ningún servidor externo.
+          When active and you have a connected session, yt-dlp uses your cookies to avoid the
+          <em> "Sign in to confirm you're not a bot"</em> block and HTTP 429 errors. Cookies are stored locally in
+          <code> %LOCALAPPDATA%/MusicBot/youtube_cookies.txt</code> and are never sent to any external server.
         </p>
 
         <div className="settings-row">
-          <span className="settings-label">Estado de conexión</span>
+          <span className="settings-label">Connection status</span>
           <span style={{ fontWeight: 600, color:
               ytAuth === null                ? "var(--color-muted, #888)"
             : ytAuth.authenticated           ? "var(--color-success, #1db954)"
             : ytAuth.enabled                 ? "var(--color-danger, #e05252)"
             :                                  "var(--color-muted, #888)" }}>
             {ytAuth === null
-              ? "Comprobando…"
+              ? "Checking…"
               : ytAuth.authenticated
-                ? `Conectado${ytAuth.account ? ` (${ytAuth.account})` : ""}`
+                ? `Connected${ytAuth.account ? ` (${ytAuth.account})` : ""}`
                 : ytAuth.enabled
-                  ? "Sin sesión — conecta para activar"
-                  : "Desactivado"}
+                  ? "No session — connect to activate"
+                  : "Disabled"}
           </span>
         </div>
 
         <div className="settings-row" style={{ gap: 8 }}>
           {ytAuth?.authenticated
             ? <button className="btn btn-sm btn-danger" onClick={handleYouTubeDisconnect} disabled={ytBusy}>
-                {ytBusy ? "Procesando…" : "Desconectar YouTube"}
+                {ytBusy ? "Processing…" : "Disconnect YouTube"}
               </button>
             : <button className="btn btn-sm btn-primary" onClick={handleYouTubeConnect} disabled={ytBusy}>
-                {ytBusy ? "Esperando login…" : "Conectar YouTube"}
+                {ytBusy ? "Waiting for login…" : "Connect YouTube"}
               </button>
           }
         </div>
         <p className="settings-hint">
-          Inicia sesión una vez con tu cuenta de Google en la ventana embebida. La sesión se restaura automáticamente al iniciar la app.
-          Si las cookies expiran (~6 meses), vuelve a conectar.
+          Sign in once with your Google account in the embedded window. The session is automatically restored when the app starts.
+          If cookies expire (~6 months), reconnect.
         </p>
       </div>
 
       <div className="settings-section">
         <div className="settings-section-title">Relay OAuth</div>
         <div className="settings-row">
-          <span className="settings-label">Estado</span>
+          <span className="settings-label">Status</span>
           <span style={{
             fontWeight: 600,
             color: !relayStatus
@@ -362,29 +362,29 @@ export const SettingsPanel: React.FC<Props> = ({ settings }) => {
               : "var(--color-danger, #e05252)",
           }}>
             {!relayStatus
-              ? "Comprobando…"
+              ? "Checking…"
               : !relayStatus.configured
-              ? "No configurado"
+              ? "Not configured"
               : relayStatus.reachable
-              ? "Activo"
+              ? "Active"
               : `Error${relayStatus.error ? `: ${relayStatus.error}` : ""}`}
           </span>
         </div>
         <div className="settings-row" style={{ gap: 8 }}>
           <button className="btn btn-sm" onClick={checkRelay} disabled={relayChecking}>
-            {relayChecking ? "Verificando…" : "Verificar conexión"}
+            {relayChecking ? "Checking…" : "Check connection"}
           </button>
         </div>
         <p className="settings-hint">
-          Proxy seguro en Cloudflare Workers que gestiona el intercambio de tokens OAuth con Spotify, Twitch y Kick. Los <code>client_secret</code> se almacenan solo en el Worker, nunca en el cliente.
+          Secure proxy on Cloudflare Workers that manages OAuth token exchange with Spotify, Twitch and Kick. The <code>client_secret</code> is stored only in the Worker, never on the client.
         </p>
       </div>
 
       <div className="settings-section">
-        <div className="settings-section-title">Auto-cola</div>
+        <div className="settings-section-title">Auto-queue</div>
 
         <label className="settings-row settings-row-toggle">
-          <span className="settings-label">Habilitar auto-cola</span>
+          <span className="settings-label">Enable auto-queue</span>
           <div
             className={`settings-toggle${form.autoQueueEnabled ? " on" : ""}`}
             onClick={() => set("autoQueueEnabled", !form.autoQueueEnabled)}
@@ -393,18 +393,18 @@ export const SettingsPanel: React.FC<Props> = ({ settings }) => {
           </div>
         </label>
         <p className="settings-hint">
-          Cuando la cola de solicitudes está vacía, reproduce canciones aleatoriamente del pool de la auto-cola.
-          Administra el pool en el tab <strong>Auto-cola</strong>.
+          When the request queue is empty, plays songs randomly from the auto-queue pool.
+          Manage the pool in the <strong>Auto-queue</strong> tab.
         </p>
       </div>
 
       <div className="settings-section">
-        <div className="settings-section-title">Aplicación</div>
+        <div className="settings-section-title">Application</div>
 
         <div className="settings-row" style={{ flexDirection: "column", alignItems: "flex-start", gap: 6 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <button className="btn btn-sm" onClick={handleUpdateYtDlp} disabled={ytDlpUpdating}>
-              {ytDlpUpdating ? "Actualizando…" : "Actualizar yt-dlp"}
+              {ytDlpUpdating ? "Updating…" : "Update yt-dlp"}
             </button>
           </div>
           {ytDlpMsg && (
@@ -414,11 +414,11 @@ export const SettingsPanel: React.FC<Props> = ({ settings }) => {
           )}
         </div>
         <p className="settings-hint">
-          Descarga la última versión de yt-dlp desde GitHub. Necesario cuando YouTube cambia su sistema anti-bot (error "Sign in to confirm you're not a bot"). La app también actualiza automáticamente al inicio si el binario tiene más de 7 días.
+          Downloads the latest version of yt-dlp from GitHub. Required when YouTube changes its anti-bot system (error "Sign in to confirm you're not a bot"). The app also updates automatically on startup if the binary is more than 7 days old.
         </p>
 
         <label className="settings-row settings-row-toggle">
-          <span className="settings-label">Abrir ventana de logs al iniciar</span>
+          <span className="settings-label">Open log window on start</span>
           <div
             className={`settings-toggle${form.openLogOnStart ? " on" : ""}`}
             onClick={() => set("openLogOnStart", !form.openLogOnStart)}
@@ -427,13 +427,13 @@ export const SettingsPanel: React.FC<Props> = ({ settings }) => {
           </div>
         </label>
         <p className="settings-hint">
-          Abre automáticamente la ventana de logs del sistema cuando MusicBot inicia. Útil para depuración.
+          Automatically opens the system log window when MusicBot starts. Useful for debugging.
         </p>
       </div>
 
       <div className="settings-actions">
         <button className="btn btn-primary" onClick={handleSave} disabled={saving}>
-          {saved ? "✓ Guardado" : saving ? "Guardando…" : "Guardar cambios"}
+          {saved ? "✓ Saved" : saving ? "Saving…" : "Save changes"}
         </button>
       </div>
     </div>

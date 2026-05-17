@@ -24,7 +24,7 @@ export const StatusBar: React.FC<Props> = ({ signalRConnected, tiktokStatus, twi
     <div className="status-bar">
       <div className="status-indicator">
         <div className={`status-dot ${signalRConnected ? "ok" : "err"}`} />
-        <span>{signalRConnected ? "Overlay" : "Desconectado"}</span>
+        <span>{signalRConnected ? "Overlay" : "Disconnected"}</span>
       </div>
 
       <div className="status-indicator" title={`TikTok: ${tiktokStatus}`}>

@@ -19,7 +19,7 @@ export const QueueList: React.FC<Props> = ({ items, onRemove, onReorder, onBan, 
   const dragIndexRef = useRef<number>(-1);
 
   if (items.length === 0 && activeDownloads.length === 0) {
-    return <div className="queue-empty">La cola está vacía</div>;
+    return <div className="queue-empty">The queue is empty</div>;
   }
 
   const handleDragStart = (uri: string, index: number) => {
@@ -86,7 +86,7 @@ export const QueueList: React.FC<Props> = ({ items, onRemove, onReorder, onBan, 
             onDragLeave={() => {}}
           >
             {onReorder && (
-              <span className="queue-drag-handle" title="Arrastrar para reordenar">⠿</span>
+              <span className="queue-drag-handle" title="Drag to reorder">⠿</span>
             )}
             <span className="queue-pos">{index + 1}</span>
             {song.coverUrl && (
@@ -124,21 +124,21 @@ export const QueueList: React.FC<Props> = ({ items, onRemove, onReorder, onBan, 
                 <button
                   className="btn btn-icon btn-autoqueue-queue"
                   onClick={() => onAddToAutoQueue(song)}
-                  title="Agregar a autocola"
+                  title="Add to auto-queue"
                 >🎲</button>
               )}
               {onBan && (
                 <button
                   className="btn btn-icon btn-ban-queue"
                   onClick={() => onBan(song.spotifyUri, song.title, song.artist)}
-                  title="Banear canción"
+                  title="Ban song"
                 >🚫</button>
               )}
               {onRemove && (
                 <button
                   className="btn btn-icon btn-remove-queue"
                   onClick={() => onRemove(song.spotifyUri)}
-                  title="Eliminar de la cola"
+                  title="Remove from queue"
                 >✕</button>
               )}
             </div>

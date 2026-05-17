@@ -15,20 +15,20 @@ const SUSCRIPCIONES: DonationOption[] = [
   {
     id: "kofi",
     name: "Ko-fi",
-    description: "Apoya con una membresía mensual y ayuda a mantener el desarrollo activo de MusicBot.",
+    description: "Support with a monthly membership and help keep MusicBot actively developed.",
     url: "https://ko-fi.com/overabstractor",
     icon: <Coffee size={22} />,
     color: "#29abe0",
-    badge: "Desde $3/mes",
+    badge: "From $3/month",
   },
   {
     id: "patreon",
     name: "Patreon",
-    description: "Únete como miembro en Patreon y contribuye directamente al desarrollo continuo de MusicBot.",
+    description: "Join as a member on Patreon and contribute directly to the ongoing development of MusicBot.",
     url: "https://www.patreon.com/overabstractor",
     icon: <Star size={22} />,
     color: "#ff424d",
-    badge: "Membresía mensual",
+    badge: "Monthly membership",
   },
 ];
 
@@ -36,11 +36,11 @@ const UNICA: DonationOption[] = [
   {
     id: "paypal",
     name: "PayPal",
-    description: "Envía una donación única por el monto que quieras. Rápido, sin compromisos.",
+    description: "Send a one-time donation for any amount. Quick, no commitment.",
     url: "https://paypal.me/OverAbstractor",
     icon: <Zap size={22} />,
     color: "#009cde",
-    badge: "Sin suscripción",
+    badge: "No subscription",
   },
 ];
 
@@ -76,38 +76,38 @@ export const DonacionesPanel: React.FC = () => {
         <div className="donaciones-icon">
           <Heart size={32} fill="currentColor" />
         </div>
-        <h2 className="donaciones-title">Apoya MusicBot</h2>
+        <h2 className="donaciones-title">Support MusicBot</h2>
         <p className="donaciones-subtitle">
-          MusicBot es un proyecto gratuito hecho con mucho esfuerzo. Si te es útil,
-          considera apoyar el desarrollo — con suscripción mensual o una donación única.
+          MusicBot is a free project made with a lot of effort. If you find it useful,
+          consider supporting the development — with a monthly subscription or a one-time donation.
         </p>
       </div>
 
-      {/* Suscripciones */}
+      {/* Subscriptions */}
       <div className="donaciones-section">
         <div className="donaciones-section-header">
-          <span className="donaciones-section-title">Suscripciones y membresías</span>
-          <span className="donaciones-section-sub">Apoyo recurrente mensual</span>
+          <span className="donaciones-section-title">Subscriptions & memberships</span>
+          <span className="donaciones-section-sub">Monthly recurring support</span>
         </div>
         <div className="donaciones-cards">
-          {SUSCRIPCIONES.map(p => renderCard(p, "Suscribirse"))}
+          {SUSCRIPCIONES.map(p => renderCard(p, "Subscribe"))}
         </div>
       </div>
 
-      {/* Donación única */}
+      {/* One-time donation */}
       <div className="donaciones-section">
         <div className="donaciones-section-header">
-          <span className="donaciones-section-title">Donación única</span>
-          <span className="donaciones-section-sub">Sin compromisos, el monto que quieras</span>
+          <span className="donaciones-section-title">One-time donation</span>
+          <span className="donaciones-section-sub">No commitment, any amount you want</span>
         </div>
         <div className="donaciones-cards">
-          {UNICA.map(p => renderCard(p, "Donar"))}
+          {UNICA.map(p => renderCard(p, "Donate"))}
         </div>
       </div>
 
       {/* Footer */}
       <div className="donaciones-note">
-        Todas las donaciones son voluntarias y no condicionan el acceso a ninguna funcionalidad. ¡Gracias por tu apoyo!
+        All donations are voluntary and do not condition access to any feature. Thank you for your support!
       </div>
     </div>
   );

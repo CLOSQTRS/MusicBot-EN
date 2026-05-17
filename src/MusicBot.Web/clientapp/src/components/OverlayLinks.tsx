@@ -13,24 +13,24 @@ export const OverlayLinks: React.FC<Props> = ({ overlayToken }) => {
 
   const overlays = [
     {
-      label:       "Player completo (responsive)",
-      description: "Now Playing + Cola en un solo overlay. En pantallas grandes muestra dos columnas; en pantallas pequeñas se apila verticalmente. Recomendado.",
+      label:       "Full player (responsive)",
+      description: "Now Playing + Queue in a single overlay. On large screens it shows two columns; on small screens it stacks vertically. Recommended.",
       path:        `/overlays/player/index.html?token=${t}`,
-      sizeLarge:   "860×420 px (2 columnas)",
+      sizeLarge:   "860×420 px (2 columns)",
       sizeSmall:   "360×640 px (vertical)",
       recommended: true,
     },
     {
-      label:       "Solo Now Playing",
-      description: "Muestra únicamente la canción en reproducción con carátula y barra de progreso.",
+      label:       "Now Playing only",
+      description: "Shows only the currently playing song with cover art and progress bar.",
       path:        `/overlays/now-playing/index.html?token=${t}`,
       sizeLarge:   "640×120 px",
       sizeSmall:   "",
       recommended: false,
     },
     {
-      label:       "Solo Cola",
-      description: "Lista compacta de canciones en espera.",
+      label:       "Queue only",
+      description: "Compact list of songs waiting in queue.",
       path:        `/overlays/queue/index.html?token=${t}`,
       sizeLarge:   "420×auto",
       sizeSmall:   "",
@@ -49,25 +49,25 @@ export const OverlayLinks: React.FC<Props> = ({ overlayToken }) => {
   return (
     <div className="overlay-links">
       <p className="overlay-hint">
-        Agrega estas URLs como <strong>Browser Source</strong> en OBS, TikTok Live Studio, Meld o cualquier herramienta de streaming. El overlay responsive incluye votaciones de skip, notificaciones de nueva canción y se adapta al tamaño que le configures.
+        Add these URLs as a <strong>Browser Source</strong> in OBS, TikTok Live Studio, Meld or any streaming tool. The responsive overlay includes skip voting, new song notifications, and adapts to whatever size you configure.
       </p>
 
       <div className="overlay-theme-selector">
-        <span className="overlay-theme-label">Tema del overlay:</span>
+        <span className="overlay-theme-label">Overlay theme:</span>
         <div className="overlay-theme-btns">
           <button
             className={`btn btn-sm ${overlayTheme === "dark" ? "btn-primary" : "btn-outline"}`}
             onClick={() => setOverlayTheme("dark")}
-          >🌙 Oscuro</button>
+          >🌙 Dark</button>
           <button
             className={`btn btn-sm ${overlayTheme === "light" ? "btn-primary" : "btn-outline"}`}
             onClick={() => setOverlayTheme("light")}
-          >☀️ Claro</button>
+          >☀️ Light</button>
         </div>
         <span className="overlay-theme-hint">
           {overlayTheme === "dark"
-            ? "Fondo oscuro transparente — ideal para fondos de pantalla oscuros o juegos."
-            : "Fondo claro semitransparente — ideal para streams con esquemas de color claros."}
+            ? "Dark transparent background — ideal for dark wallpapers or games."
+            : "Semi-transparent light background — ideal for streams with light color schemes."}
         </span>
       </div>
 
@@ -75,7 +75,7 @@ export const OverlayLinks: React.FC<Props> = ({ overlayToken }) => {
         <div key={o.path} className={`overlay-card${o.recommended ? " overlay-card-featured" : ""}`}>
           <div className="overlay-card-header">
             <span className="overlay-card-label">{o.label}</span>
-            {o.recommended && <span className="overlay-recommended-badge">Recomendado</span>}
+            {o.recommended && <span className="overlay-recommended-badge">Recommended</span>}
           </div>
           <p className="overlay-card-desc">{o.description}</p>
           <div className="overlay-card-sizes">
@@ -85,7 +85,7 @@ export const OverlayLinks: React.FC<Props> = ({ overlayToken }) => {
           <code className="overlay-link-url">{BASE}{themedPath(o.path)}</code>
           <div className="overlay-link-actions">
             <button className="btn btn-sm btn-primary" onClick={() => copyUrl(o.path)}>
-              {copied === o.path ? "✓ Copiado" : "Copiar URL"}
+              {copied === o.path ? "✓ Copied" : "Copy URL"}
             </button>
             <a href={themedPath(o.path)} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline">
               Preview

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cola (Horizontal) – MusicBot</title>
+  <title>Queue (Horizontal) – MusicBot</title>
   <script src="../shared/theme.js"></script>
   <link rel="stylesheet" href="../shared/overlay.css">
 </head>
@@ -11,7 +11,7 @@
   <div id="queue-container" class="queue-container hidden">
     <div class="queue-header">
       <span class="queue-icon">♫</span>
-      <span>Cola</span>
+      <span>Queue</span>
       <span id="queue-count" class="queue-count">0</span>
     </div>
     <div id="dl-banners"></div>
@@ -110,7 +110,7 @@
         <div class="ov-dl-banner-row">
           <span class="ov-dl-banner-icon">⬇</span>
           <div class="ov-dl-banner-info">
-            <span class="ov-dl-banner-label">Descargando</span>
+            <span class="ov-dl-banner-label">Downloading</span>
             <span class="ov-dl-banner-title">${esc(title || "...")}</span>
           </div>
           <span class="ov-dl-banner-pct">${pct}%</span>
@@ -130,7 +130,7 @@
       const fill   = el.querySelector(".ov-dl-banner-fill");
       const label  = el.querySelector(".ov-dl-banner-label");
       if (pctEl) pctEl.textContent = `${pct}%`;
-      if (label) label.textContent = pct === 0 ? "Buscando..." : "Descargando";
+      if (label) label.textContent = pct === 0 ? "Searching..." : "Downloading";
       if (fill) {
         if (pct > 0) {
           fill.classList.remove("ov-dl-indeterminate");
@@ -345,7 +345,7 @@
         fill.classList.add("ov-dl-indeterminate");
         fill.style.width = "";
       }
-      wrap.querySelector(".queue-item-dl-pct").textContent = pct === 0 ? "⬇ Buscando..." : `⬇ ${pct}%`;
+      wrap.querySelector(".queue-item-dl-pct").textContent = pct === 0 ? "⬇ Searching..." : `⬇ ${pct}%`;
     }
 
     // Vote widget + toasts (must be after conn is defined but before start)

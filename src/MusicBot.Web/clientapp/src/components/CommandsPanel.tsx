@@ -14,77 +14,77 @@ const COMMANDS: Command[] = [
   // ── Viewer ──────────────────────────────────────────────────────────────────
   {
     role: "viewer",
-    syntax: "!play <canción>",
+    syntax: "!play <song>",
     aliases: "!sr",
-    description: "Solicita una canción por nombre, artista o URL de YouTube.",
+    description: "Request a song by name, artist, or YouTube URL.",
     example: "!play Bad Bunny Tití me preguntó",
   },
   {
     role: "viewer",
     syntax: "!revoke",
     aliases: "!quitar",
-    description: "Elimina tu propia canción de la cola antes de que se reproduzca.",
+    description: "Remove your own song from the queue before it plays.",
   },
   {
     role: "viewer",
     syntax: "!skip",
-    description: "Salta tu canción si está sonando en este momento (solo la tuya).",
+    description: "Skip your song if it is currently playing (yours only).",
   },
   {
     role: "viewer",
     syntax: "!bump",
-    description: "Sube tu canción una posición en la cola.",
+    description: "Move your song one position up in the queue.",
   },
   {
     role: "viewer",
     syntax: "!pos",
     aliases: "!position",
-    description: "Muestra en qué posición está tu canción y el tiempo estimado de espera.",
+    description: "Show your song's position and estimated wait time.",
   },
   {
     role: "viewer",
     syntax: "!info",
-    description: "Muestra cuántas canciones tienes en la cola y en qué posiciones.",
+    description: "Show how many songs you have in the queue and at which positions.",
   },
   {
     role: "viewer",
     syntax: "!song",
     aliases: "!cancion · !current",
-    description: "Muestra la canción que está sonando en este momento.",
+    description: "Show the song currently playing.",
   },
   {
     role: "viewer",
     syntax: "!queue",
     aliases: "!cola",
-    description: "Muestra las próximas canciones en la cola de solicitudes.",
+    description: "Show the upcoming songs in the request queue.",
   },
   {
     role: "viewer",
     syntax: "!history",
     aliases: "!historial",
-    description: "Muestra las últimas 3 canciones reproducidas.",
+    description: "Show the last 3 songs played.",
   },
   {
     role: "viewer",
     syntax: "!like",
     aliases: "!love",
-    description: "Guarda la canción actual en la auto-cola para que vuelva a sonar.",
+    description: "Save the current song to the auto-queue so it plays again.",
   },
   {
     role: "viewer",
     syntax: "!aqui",
     aliases: "!here",
-    description: "Confirma tu presencia cuando el bot te avisa que tu canción está por sonar.",
+    description: "Confirm your presence when the bot notifies you that your song is about to play.",
   },
   {
     role: "viewer",
     syntax: "!si · !yes / !no",
-    description: "Vota para saltar (o no) la canción actual durante una votación.",
+    description: "Vote to skip (or keep) the current song during a vote.",
   },
   {
     role: "viewer",
     syntax: "!keep",
-    description: "Salva la canción actual de ser eliminada durante un voto de skip.",
+    description: "Save the current song from being removed during a skip vote.",
   },
 ];
 
@@ -98,17 +98,17 @@ export const CommandsPanel: React.FC = () => (
   <div className="commands-panel">
     <div className="commands-panel-header">
       <p className="commands-panel-hint">
-        Todos los comandos funcionan con los prefijos <code>!</code>, <code>.</code> y <code>/</code>
-        &nbsp;— por ejemplo <code>!play</code>, <code>.play</code> o <code>/play</code>.
+        All commands work with the prefixes <code>!</code>, <code>.</code> and <code>/</code>
+        &nbsp;— e.g. <code>!play</code>, <code>.play</code> or <code>/play</code>.
       </p>
     </div>
     <table className="commands-table">
       <thead>
         <tr>
-          <th>Comando</th>
+          <th>Command</th>
           <th>Alias</th>
-          <th>Rol</th>
-          <th>Descripción</th>
+          <th>Role</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
@@ -120,7 +120,7 @@ export const CommandsPanel: React.FC = () => (
             <td>
               {cmd.description}
               {cmd.example && (
-                <span className="commands-example"> Ej: <code>{cmd.example}</code></span>
+                <span className="commands-example"> Ex: <code>{cmd.example}</code></span>
               )}
             </td>
           </tr>

@@ -20,10 +20,10 @@ interface Props {
 }
 
 const TABS: { id: SettingsTab; label: string; icon: React.ReactNode }[] = [
-  { id: "settings",  label: "Ajustes",     icon: <Settings size={14} />    },
-  { id: "platforms", label: "Plataformas", icon: <Zap size={14} />         },
-  { id: "overlays",  label: "Overlays",    icon: <Monitor size={14} />     },
-  { id: "ticker",    label: "Mensajes",    icon: <MessageSquare size={14} /> },
+  { id: "settings",  label: "Settings",   icon: <Settings size={14} />    },
+  { id: "platforms", label: "Platforms",  icon: <Zap size={14} />         },
+  { id: "overlays",  label: "Overlays",   icon: <Monitor size={14} />     },
+  { id: "ticker",    label: "Messages",   icon: <MessageSquare size={14} /> },
 ];
 
 export const SettingsModal: React.FC<Props> = ({

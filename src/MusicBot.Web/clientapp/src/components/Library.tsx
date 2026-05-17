@@ -107,13 +107,13 @@ export const Library: React.FC<Props> = ({ refreshKey, saveDownloads = true }) =
     </th>
   );
 
-  if (loading) return <div className="lib-empty">Cargando librería...</div>;
+  if (loading) return <div className="lib-empty">Loading library...</div>;
 
   return (
     <div className="library-panel">
       {!saveDownloads && (
         <div className="lib-temp-banner">
-          ⚠️ Modo temporal activo — los archivos se eliminan al terminar cada canción. La librería solo muestra la sesión actual.
+          ⚠️ Temporary mode active — files are deleted after each song finishes. The library only shows the current session.
         </div>
       )}
       <div className="lib-toolbar">
@@ -123,7 +123,7 @@ export const Library: React.FC<Props> = ({ refreshKey, saveDownloads = true }) =
             <input
               className="lib-search-input"
               type="text"
-              placeholder="Buscar por título o artista…"
+              placeholder="Search by title or artist…"
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
@@ -132,46 +132,46 @@ export const Library: React.FC<Props> = ({ refreshKey, saveDownloads = true }) =
             )}
           </div>
           <div className="lib-stats">
-            <span>{filtered.length}{search ? ` / ${tracks.length}` : ""} canciones</span>
+            <span>{filtered.length}{search ? ` / ${tracks.length}` : ""} songs</span>
             <span>·</span>
-            <span>{totalPlays} reproducciones</span>
+            <span>{totalPlays} plays</span>
             <span>·</span>
             <span>{formatBytes(totalSize)}</span>
           </div>
         </div>
         <div className="lib-toolbar-right">
           <button className="btn btn-sm btn-outline lib-open-folder" onClick={handleOpenFolder} disabled={opening}>
-            {opening ? "Abriendo…" : "📁 Abrir carpeta"}
+            {opening ? "Opening…" : "📁 Open folder"}
           </button>
           {!confirm ? (
             <button className="btn btn-sm btn-danger-outline" onClick={() => setConfirm(true)} disabled={tracks.length === 0}>
-              Limpiar librería
+              Clear library
             </button>
           ) : (
             <div className="lib-confirm">
-              <span>¿Eliminar {tracks.length} canciones del disco?</span>
-              <button className="btn btn-sm btn-danger" onClick={handleClear}>Sí, eliminar</button>
-              <button className="btn btn-sm btn-secondary" onClick={() => setConfirm(false)}>Cancelar</button>
+              <span>Delete {tracks.length} songs from disk?</span>
+              <button className="btn btn-sm btn-danger" onClick={handleClear}>Yes, delete</button>
+              <button className="btn btn-sm btn-secondary" onClick={() => setConfirm(false)}>Cancel</button>
             </div>
           )}
         </div>
       </div>
 
       {tracks.length === 0 ? (
-        <div className="lib-empty">No hay canciones descargadas.</div>
+        <div className="lib-empty">No downloaded songs.</div>
       ) : filtered.length === 0 ? (
-        <div className="lib-empty">Sin resultados para "{search}".</div>
+        <div className="lib-empty">No results for "{search}".</div>
       ) : (
         <div className="lib-table-wrap">
           <table className="lib-table">
             <thead>
               <tr>
                 <th className="lib-th lib-th-cover" />
-                <SortBtn col="title"         label="Canción" />
-                <SortBtn col="downloadedAt"  label="Descargado" />
-                <SortBtn col="playCount"     label="Veces solicitada" />
-                <SortBtn col="totalPlayedMs" label="Tiempo total" />
-                <SortBtn col="fileSizeBytes" label="Tamaño" />
+                <SortBtn col="title"         label="Song" />
+                <SortBtn col="downloadedAt"  label="Downloaded" />
+                <SortBtn col="playCount"     label="Times requested" />
+                <SortBtn col="totalPlayedMs" label="Total time" />
+                <SortBtn col="fileSizeBytes" label="Size" />
                 <th className="lib-th" />
               </tr>
             </thead>
@@ -187,7 +187,7 @@ export const Library: React.FC<Props> = ({ refreshKey, saveDownloads = true }) =
                     <div className="lib-title">{t.title}</div>
                     <div className="lib-artist">{t.artist}</div>
                     <div className="lib-duration">{formatDuration(t.durationMs)}</div>
-                    {!t.fileExists && <span className="lib-missing-badge">Archivo no encontrado</span>}
+                    {!t.fileExists && <span className="lib-missing-badge">File not found</span>}
                   </td>
                   <td className="lib-td lib-td-center">{formatDate(t.downloadedAt)}</td>
                   <td className="lib-td lib-td-center lib-stat">{t.playCount}</td>
@@ -198,9 +198,9 @@ export const Library: React.FC<Props> = ({ refreshKey, saveDownloads = true }) =
                       <span className="lib-feedback">{libMsg.text}</span>
                     ) : (
                       <div className="lib-actions">
-                        <button className="btn btn-sm btn-primary" title="Reproducir ahora" disabled={!t.fileExists} onClick={() => handlePlay(t)}>▶</button>
-                        <button className="btn btn-sm btn-outline" title="Agregar a la cola" disabled={!t.fileExists} onClick={() => handleEnqueue(t)}>+ Cola</button>
-                        <button className="btn btn-icon-danger" title="Eliminar" onClick={() => handleDelete(t.id)}>🗑</button>
+                        <button className="btn btn-sm btn-primary" title="Play now" disabled={!t.fileExists} onClick={() => handlePlay(t)}>▶</button>
+                        <button className="btn btn-sm btn-outline" title="Add to queue" disabled={!t.fileExists} onClick={() => handleEnqueue(t)}>+ Queue</button>
+                        <button className="btn btn-icon-danger" title="Remove" onClick={() => handleDelete(t.id)}>🗑</button>
                       </div>
                     )}
                   </td>

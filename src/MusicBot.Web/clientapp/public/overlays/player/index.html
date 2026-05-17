@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -323,8 +323,8 @@
       <div class="idle-ring"></div>
       <div class="idle-ring"></div>
       <div class="idle-icon">♫</div>
-      <div class="idle-title">Esperando comandos</div>
-      <div class="idle-cmd">!play canción · artista</div>
+      <div class="idle-title">Waiting for commands</div>
+      <div class="idle-cmd">!play song · artist</div>
     </div>
 
     <!-- Main row: Left column (ticker+NP) + Queue (right) -->
@@ -343,7 +343,7 @@
           <div class="pl-info">
             <div class="pl-label">
               <div id="pl-dot" class="pl-label-dot"></div>
-              <span id="pl-status">Reproduciendo</span>
+              <span id="pl-status">Playing</span>
             </div>
             <div id="pl-title"     class="pl-title"></div>
             <div id="pl-artist"    class="pl-artist"></div>
@@ -363,11 +363,11 @@
       <!-- Queue (upcoming only — current song shown in player) -->
       <div class="queue-panel">
         <div class="qp-header">
-          <span>♫</span><span>Cola</span>
+          <span>♫</span><span>Queue</span>
           <span id="qp-count" class="qp-count">0</span>
         </div>
         <div id="qp-list" class="qp-list">
-          <div class="qp-empty">Sin canciones en cola</div>
+          <div class="qp-empty">No songs in queue</div>
         </div>
       </div>
 
@@ -431,7 +431,7 @@
       plDot.classList.toggle("paused",!playing);
       plBar.classList.remove("downloading","dl-indeterminate");
       plStatus.className="";
-      plStatus.textContent=playing?"Reproduciendo":"Pausado";
+      plStatus.textContent=playing?"Playing":"Paused";
       plTitle.textContent=song.title;
       plArtist.textContent=song.artist;
       if(rb){ plReq.innerHTML=`${badge(pl)} ♪ ${esc(rb)}`; plReq.classList.remove("hidden"); }
@@ -493,13 +493,13 @@
           plVinyl.classList.toggle("playing",isPlaying);
           plVinyl.classList.toggle("paused",!isPlaying);
           plDot.classList.toggle("paused",!isPlaying);
-          if(!_dlStates[currentUri]) plStatus.textContent=isPlaying?"Reproduciendo":"Pausado";
+          if(!_dlStates[currentUri]) plStatus.textContent=isPlaying?"Playing":"Paused";
         }
       }
 
       // Queue shows upcoming only (current song is in the player panel)
       const available=Math.max(0,maxQueueSize-upcoming.length-(nowSong?1:0));
-      qpCount.textContent=`${upcoming.length} / ${maxQueueSize} · ${available} libre${available===1?"":"s"}`;
+      qpCount.textContent=`${upcoming.length} / ${maxQueueSize} · ${available} free`;
 
       const incomingUris=new Set(upcoming.map(i=>(i.song||i).spotifyUri));
 
@@ -532,7 +532,7 @@
     function refreshNPDownloadBar() {
       if (!currentUri || !_dlStates[currentUri]) return;
       const pct = _dlStates[currentUri].pct ?? 0;
-      plStatus.textContent = pct === 0 ? "⬇ Buscando..." : "⬇ Descargando...";
+      plStatus.textContent = pct === 0 ? "⬇ Searching..." : "⬇ Downloading...";
       plStatus.className   = "pl-downloading";
       plBar.classList.add("downloading");
       plCur.innerHTML      = `<span class="pl-download-pct">${pct}%</span>`;
@@ -570,7 +570,7 @@
         fill.classList.add("ov-dl-indeterminate");
         fill.style.width = "";
       }
-      wrap.querySelector(".qp-dl-pct").textContent = pct === 0 ? "⬇ Buscando..." : `⬇ ${pct}%`;
+      wrap.querySelector(".qp-dl-pct").textContent = pct === 0 ? "⬇ Searching..." : `⬇ ${pct}%`;
     }
 
     // ── Download event handlers ──────────────────────────────────────────
@@ -621,7 +621,7 @@
         plVinyl.classList.toggle("playing",isPlaying);
         plVinyl.classList.toggle("paused",!isPlaying);
         plDot.classList.toggle("paused",!isPlaying);
-        if(!_dlStates[currentUri]) plStatus.textContent=isPlaying?"Reproduciendo":"Pausado";
+        if(!_dlStates[currentUri]) plStatus.textContent=isPlaying?"Playing":"Paused";
       }
     });
 

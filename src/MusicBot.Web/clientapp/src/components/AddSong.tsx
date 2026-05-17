@@ -24,7 +24,7 @@ export const AddSong: React.FC<Props> = ({ onAdded }) => {
         onAdded();
       }
     } catch {
-      setMessage("Error al agregar canción");
+      setMessage("Error adding song");
     } finally {
       setLoading(false);
     }
@@ -37,7 +37,7 @@ export const AddSong: React.FC<Props> = ({ onAdded }) => {
           <input
             type="text"
             className="input"
-            placeholder="Nombre o artista, o pegar URL (YouTube / Spotify)…"
+            placeholder="Name or artist, or paste URL (YouTube / Spotify)…"
             value={query}
             onChange={(e) => { setQuery(e.target.value); setMessage(""); }}
             disabled={loading}
@@ -46,7 +46,7 @@ export const AddSong: React.FC<Props> = ({ onAdded }) => {
           <input
             type="text"
             className="input input-sm"
-            placeholder="Solicitado por"
+            placeholder="Requested by"
             value={requestedBy}
             onChange={(e) => setRequestedBy(e.target.value)}
           />
@@ -56,7 +56,7 @@ export const AddSong: React.FC<Props> = ({ onAdded }) => {
             style={{ width: "100%" }}
             disabled={loading || !query.trim()}
           >
-            {loading ? "Agregando…" : "Agregar"}
+            {loading ? "Adding…" : "Add"}
           </button>
         </div>
         {message && <div className="form-message">{message}</div>}

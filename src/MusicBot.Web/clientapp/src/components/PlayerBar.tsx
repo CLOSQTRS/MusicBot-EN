@@ -109,19 +109,19 @@ export const PlayerBar: React.FC<Props> = ({
         {/* Left: controls + time */}
         <div className="pb-left">
           <div className="pb-controls">
-            <button className="pb-ctrl-btn" onClick={handlePrev} title="Reiniciar">
+            <button className="pb-ctrl-btn" onClick={handlePrev} title="Restart">
               <SkipBack size={18} />
             </button>
             {state?.isPlaying ? (
-              <button className="pb-ctrl-btn pb-ctrl-play" onClick={onPause} title="Pausar">
+              <button className="pb-ctrl-btn pb-ctrl-play" onClick={onPause} title="Pause">
                 <Pause size={20} fill="currentColor" />
               </button>
             ) : (
-              <button className="pb-ctrl-btn pb-ctrl-play" onClick={onResume} title="Reanudar">
+              <button className="pb-ctrl-btn pb-ctrl-play" onClick={onResume} title="Resume">
                 <Play size={20} fill="currentColor" />
               </button>
             )}
-            <button className="pb-ctrl-btn" onClick={onSkip} title="Siguiente">
+            <button className="pb-ctrl-btn" onClick={onSkip} title="Next">
               <SkipForward size={18} />
             </button>
           </div>
@@ -153,7 +153,7 @@ export const PlayerBar: React.FC<Props> = ({
                 <button
                   className={`pb-like-btn${likedUris?.has(song.spotifyUri) ? " liked" : ""}`}
                   onClick={() => onToggleLike({ spotifyUri: song.spotifyUri, title: song.title, artist: song.artist, coverUrl: song.coverUrl, durationMs: song.durationMs ?? 0 })}
-                  title={likedUris?.has(song.spotifyUri) ? "Quitar de favoritos" : "Añadir a favoritos"}
+                  title={likedUris?.has(song.spotifyUri) ? "Remove from favorites" : "Add to favorites"}
                 >
                   <Heart size={15} fill={likedUris?.has(song.spotifyUri) ? "currentColor" : "none"} />
                 </button>
@@ -167,12 +167,12 @@ export const PlayerBar: React.FC<Props> = ({
                 </svg>
               </div>
               <div className="pb-info">
-                <span className="pb-title">{downloadState.title || "Descargando…"}</span>
-                <span className="pb-artist">{downloadState.pct === 0 ? "Buscando en YouTube…" : `${downloadState.pct}%`}</span>
+                <span className="pb-title">{downloadState.title || "Downloading…"}</span>
+                <span className="pb-artist">{downloadState.pct === 0 ? "Searching YouTube…" : `${downloadState.pct}%`}</span>
               </div>
             </>
           ) : (
-            <span className="pb-idle">No hay canción en reproducción</span>
+            <span className="pb-idle">No song playing</span>
           )}
         </div>
 
@@ -181,25 +181,25 @@ export const PlayerBar: React.FC<Props> = ({
           <button
             className={`pb-side-btn${shuffleActive ? " pb-side-btn-active" : ""}`}
             onClick={onToggleShuffle}
-            title="Mezclar cola"
+            title="Shuffle queue"
           >
             <Shuffle size={16} />
           </button>
           <button
             className={`pb-side-btn${queueActive ? " pb-side-btn-active" : ""}`}
-            title={queueActive ? "Ocultar cola" : "Mostrar cola"}
+            title={queueActive ? "Hide queue" : "Show queue"}
             onClick={onToggleQueue}
           >
             <List size={16} />
           </button>
           <button
             className={`pb-side-btn${devicesActive ? " pb-side-btn-active" : ""}`}
-            title={devicesActive ? "Ocultar dispositivos" : "Dispositivos de audio"}
+            title={devicesActive ? "Hide devices" : "Audio devices"}
             onClick={onToggleDevices}
           >
             <Headphones size={16} />
           </button>
-          <button className="pb-side-btn" onClick={toggleMute} title="Silenciar">
+          <button className="pb-side-btn" onClick={toggleMute} title="Mute">
             <VolumeIcon size={16} />
           </button>
           <input

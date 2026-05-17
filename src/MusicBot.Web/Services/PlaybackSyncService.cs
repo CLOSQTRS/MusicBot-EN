@@ -247,7 +247,7 @@ public class PlaybackSyncService : BackgroundService
             {
                 services.Queue.Skip();
                 _ = _hub.Clients.Group($"user:{LocalUser.Id}")
-                        .SendAsync("queue:download-failed", new { title = origTitle, artist = origArtist, reason = "No disponible" });
+                        .SendAsync("queue:download-failed", new { title = origTitle, artist = origArtist, reason = "Unavailable" });
                 await StartCurrentTrackAsync(services);
             }
             return;
@@ -517,9 +517,9 @@ public class PlaybackSyncService : BackgroundService
         }
 
         // No alternative — mark the item so the frontend shows the error badge
-        services.Queue.MarkDownloadError(failedUri, "No disponible");
+        services.Queue.MarkDownloadError(failedUri, "Unavailable");
         _ = _hub.Clients.Group($"user:{LocalUser.Id}")
-                .SendAsync("queue:download-failed", new { title, artist, reason = "No disponible" });
+                .SendAsync("queue:download-failed", new { title, artist, reason = "Unavailable" });
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────

@@ -151,41 +151,41 @@ export const ContextMenu: React.FC<Props> = ({
         <>
           {isNowPlaying ? (
             <button className="ctx-item" onClick={() => { onSkip?.(); onClose(); }}>
-              <SkipForward size={13} /> Skipear
+              <SkipForward size={13} /> Skip
             </button>
           ) : (
             <>
               {!isQueue && (
                 <button className="ctx-item" onClick={handlePlayNow}>
-                  <Play size={13} fill="currentColor" /> Reproducir ahora
+                  <Play size={13} fill="currentColor" /> Play now
                 </button>
               )}
               {!isQueue && (
                 <button className="ctx-item" onClick={handleEnqueue}>
-                  <Plus size={13} /> Agregar a cola
+                  <Plus size={13} /> Add to queue
                 </button>
               )}
             </>
           )}
           {isBackground && onPromoteToQueue && (
             <button className="ctx-item" onClick={() => { onPromoteToQueue(song.spotifyUri); onClose(); }}>
-              <Plus size={13} /> Mover a la cola
+              <Plus size={13} /> Move to queue
             </button>
           )}
           <button className="ctx-item" onClick={openPlaylistView}>
-            <ListMusic size={13} /> Guardar en playlist
+            <ListMusic size={13} /> Save to playlist
           </button>
           {onRemove && !isNowPlaying && (
             <>
               <div className="ctx-separator" />
               <button className="ctx-item" onClick={() => { onRemove(song.spotifyUri); onClose(); }}>
-                <X size={13} /> {isQueue ? "Eliminar de cola" : "Quitar de lista"}
+                <X size={13} /> {isQueue ? "Remove from queue" : "Remove from playlist"}
               </button>
             </>
           )}
           {isQueue && !isNowPlaying && onBan && (
             <button className="ctx-item ctx-item-danger" onClick={() => { onBan(song.spotifyUri, song.title, song.artist); onClose(); }}>
-              <Ban size={13} /> Banear canción
+              <Ban size={13} /> Ban song
             </button>
           )}
         </>
@@ -201,7 +201,7 @@ export const ContextMenu: React.FC<Props> = ({
                 <ChevronLeft size={14} />
               </button>
             )}
-            <span className="ctx-pl-title">Guardar en playlist</span>
+            <span className="ctx-pl-title">Save to playlist</span>
           </div>
 
           {feedback ? (
@@ -213,7 +213,7 @@ export const ContextMenu: React.FC<Props> = ({
                 <Search size={12} className="ctx-pl-search-icon" />
                 <input
                   className="ctx-pl-search"
-                  placeholder="Buscar lista…"
+                  placeholder="Search playlist…"
                   value={search}
                   onChange={e => setSearch(e.target.value)}
                   autoFocus={defaultView !== "playlist"}
@@ -223,32 +223,32 @@ export const ContextMenu: React.FC<Props> = ({
               {/* Create new */}
               {!showCreate ? (
                 <button className="ctx-item ctx-item-create" onClick={() => setShowCreate(true)}>
-                  <Plus size={13} /> Nueva lista
+                  <Plus size={13} /> New playlist
                 </button>
               ) : (
                 <form className="ctx-pl-create-form" onSubmit={createAndAdd}>
                   <input
                     className="ctx-pl-search"
-                    placeholder="Nombre de la lista…"
+                    placeholder="Playlist name…"
                     value={newName}
                     onChange={e => setNewName(e.target.value)}
                     autoFocus
                     disabled={busy}
                   />
                   <button type="submit" className="ctx-pl-create-btn" disabled={busy || !newName.trim()}>
-                    Crear
+                    Create
                   </button>
                 </form>
               )}
 
               {memberships == null ? (
-                <div className="ctx-pl-empty">Cargando…</div>
+                <div className="ctx-pl-empty">Loading…</div>
               ) : (
                 <div className="ctx-pl-list">
                   {/* Saved in section */}
                   {filtered(saved).length > 0 && (
                     <>
-                      <div className="ctx-pl-section-label">Guardado en</div>
+                      <div className="ctx-pl-section-label">Saved in</div>
                       {filtered(saved).map(m => (
                         <button key={m.id} className="ctx-item ctx-item-membership" onClick={() => toggleMembership(m)} disabled={busy}>
                           <span className={`ctx-pl-icon${m.isSystem ? " liked" : ""}`}>
@@ -268,7 +268,7 @@ export const ContextMenu: React.FC<Props> = ({
                   {filtered(unsaved).length > 0 && (
                     <>
                       <div className="ctx-pl-section-label">
-                        {filtered(saved).length > 0 ? "Actualizado recientemente" : "Tus listas"}
+                        {filtered(saved).length > 0 ? "Recently updated" : "Your playlists"}
                       </div>
                       {filtered(unsaved).map(m => (
                         <button key={m.id} className="ctx-item ctx-item-membership" onClick={() => toggleMembership(m)} disabled={busy}>
@@ -286,7 +286,7 @@ export const ContextMenu: React.FC<Props> = ({
                   )}
 
                   {filtered(saved).length === 0 && filtered(unsaved).length === 0 && (
-                    <div className="ctx-pl-empty">Sin resultados</div>
+                    <div className="ctx-pl-empty">No results</div>
                   )}
                 </div>
               )}

@@ -7,9 +7,9 @@ import { NewsItem } from "../services/community/ICommunityService";
 import { api } from "../services/api";
 
 const TAG_LABELS: Record<NewsItem["tag"], string> = {
-  novedad:   "Novedad",
-  mejora:    "Mejora",
-  arreglado: "Arreglado",
+  novedad:   "New",
+  mejora:    "Improvement",
+  arreglado: "Fixed",
 };
 
 // Open external links in system browser instead of WebView2
@@ -70,7 +70,7 @@ interface Props {
 export const NewsCard: React.FC<Props> = ({ item, onDelete, onEdit }) => {
   const hasBody = !!item.body?.trim();
 
-  const formattedDate = new Date(item.date).toLocaleDateString("es-ES", {
+  const formattedDate = new Date(item.date).toLocaleDateString("en-US", {
     day: "numeric", month: "long", year: "numeric",
   });
 
@@ -81,12 +81,12 @@ export const NewsCard: React.FC<Props> = ({ item, onDelete, onEdit }) => {
           <span className={`news-tag news-tag-${item.tag}`}>{TAG_LABELS[item.tag]}</span>
           <span className="news-card-v2-date">{formattedDate}</span>
           {onEdit && (
-            <button className="news-admin-edit-btn" onClick={onEdit} title="Editar novedad">
+            <button className="news-admin-edit-btn" onClick={onEdit} title="Edit news post">
               <Pencil size={13} />
             </button>
           )}
           {onDelete && (
-            <button className="news-admin-delete-btn" onClick={onDelete} title="Eliminar novedad">
+            <button className="news-admin-delete-btn" onClick={onDelete} title="Delete news post">
               <Trash2 size={13} />
             </button>
           )}
@@ -109,7 +109,7 @@ export const NewsCard: React.FC<Props> = ({ item, onDelete, onEdit }) => {
 
       {!hasBody && item.url && (
         <button className="news-card-v2-toggle" onClick={() => api.openInBrowser(item.url!)}>
-          <ExternalLink size={14} /> Leer más
+          <ExternalLink size={14} /> Read more
         </button>
       )}
     </article>

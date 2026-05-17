@@ -9,22 +9,22 @@ import { ComunidadAuth } from "./ComunidadAuth";
 const CATEGORIES = [
   { value: "general",  label: "General" },
   { value: "bug",      label: "Error / Bug" },
-  { value: "question", label: "Pregunta" },
-  { value: "feature",  label: "Sugerencia" },
+  { value: "question", label: "Question" },
+  { value: "feature",  label: "Suggestion" },
 ];
 
 const TICKET_STATUSES: { value: SupportTicket["status"]; label: string }[] = [
-  { value: "open",        label: "Abierto" },
-  { value: "in-progress", label: "En proceso" },
-  { value: "resolved",    label: "Resuelto" },
-  { value: "closed",      label: "Cerrado" },
+  { value: "open",        label: "Open" },
+  { value: "in-progress", label: "In progress" },
+  { value: "resolved",    label: "Resolved" },
+  { value: "closed",      label: "Closed" },
 ];
 
 const STATUS_CONFIG: Record<string, { label: string; icon: React.ReactNode; cls: string }> = {
-  open:          { label: "Abierto",    icon: <Clock size={12} />,        cls: "status-open" },
-  "in-progress": { label: "En proceso", icon: <AlertCircle size={12} />,  cls: "status-progress" },
-  resolved:      { label: "Resuelto",   icon: <CheckCircle2 size={12} />, cls: "status-resolved" },
-  closed:        { label: "Cerrado",    icon: <CheckCircle2 size={12} />, cls: "status-closed" },
+  open:          { label: "Open",        icon: <Clock size={12} />,        cls: "status-open" },
+  "in-progress": { label: "In progress", icon: <AlertCircle size={12} />,  cls: "status-progress" },
+  resolved:      { label: "Resolved",    icon: <CheckCircle2 size={12} />, cls: "status-resolved" },
+  closed:        { label: "Closed",      icon: <CheckCircle2 size={12} />, cls: "status-closed" },
 };
 
 type SoporteView = "form" | "history" | "cola";
@@ -119,8 +119,8 @@ export const SoportePanel: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim()) { setError("El título es obligatorio"); return; }
-    if (!description.trim()) { setError("La descripción es obligatoria"); return; }
+    if (!title.trim()) { setError("Title is required"); return; }
+    if (!description.trim()) { setError("Description is required"); return; }
     setSaving(true); setError(null);
     try {
       await communityService.createTicket(title.trim(), description.trim(), category);
@@ -128,12 +128,12 @@ export const SoportePanel: React.FC = () => {
       setSuccess(true);
       setTimeout(() => setSuccess(false), 5000);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Error al enviar el ticket");
+      setError(err instanceof Error ? err.message : "Error submitting ticket");
     } finally { setSaving(false); }
   };
 
   const handleDelete = async (id: string) => {
-    const ok = await confirm({ title: "¿Eliminar ticket?", message: "Se eliminará de tu historial.", confirmText: "Eliminar", danger: true });
+    const ok = await confirm({ title: "Delete ticket?", message: "It will be removed from your history.", confirmText: "Delete", danger: true });
     if (!ok) return;
     try {
       await communityService.deleteTicket(id);
@@ -174,13 +174,13 @@ export const SoportePanel: React.FC = () => {
   };
 
   const formatDate = (iso: string) =>
-    new Date(iso).toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" });
+    new Date(iso).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
   const noAuthMessage = (action: string) => (
     <div className="soporte-empty-state">
       <LifeBuoy size={40} className="soporte-empty-icon" />
-      <div className="soporte-empty-title">Inicia sesión para {action}</div>
-      <div className="soporte-empty-sub">Necesitas una cuenta de Google para usar el soporte.</div>
+      <div className="soporte-empty-title">Sign in to {action}</div>
+      <div className="soporte-empty-sub">You need a Google account to use support.</div>
     </div>
   );
 
@@ -191,14 +191,14 @@ export const SoportePanel: React.FC = () => {
 
       <div className="soporte-header-tabs">
         <button className={`soporte-header-tab${view === "form" ? " active" : ""}`} onClick={() => setView("form")}>
-          <Plus size={13} /> Nuevo ticket
+          <Plus size={13} /> New ticket
         </button>
         <button className={`soporte-header-tab${view === "history" ? " active" : ""}`} onClick={() => setView("history")}>
-          <LifeBuoy size={13} /> Mis tickets
+          <LifeBuoy size={13} /> My tickets
         </button>
         {isSupport && (
           <button className={`soporte-header-tab${view === "cola" ? " active" : ""}`} onClick={() => setView("cola")}>
-            <Inbox size={13} /> Cola de soporte
+            <Inbox size={13} /> Support queue
           </button>
         )}
       </div>
@@ -206,28 +206,28 @@ export const SoportePanel: React.FC = () => {
       {/* ── NEW TICKET FORM ── */}
       {view === "form" && (
         <div className="soporte-content">
-          {!user ? noAuthMessage("enviar tickets") : (
+          {!user ? noAuthMessage("submit tickets") : (
             <>
               <div className="soporte-form-header">
-                <h3 className="soporte-form-title">Enviar un ticket de soporte</h3>
-                <p className="soporte-form-sub">Describe tu problema o pregunta y lo revisaremos lo antes posible.</p>
+                <h3 className="soporte-form-title">Submit a support ticket</h3>
+                <p className="soporte-form-sub">Describe your problem or question and we will review it as soon as possible.</p>
               </div>
               {success && (
                 <div className="soporte-success">
-                  <CheckCircle2 size={16} /> Ticket enviado. Puedes verlo en "Mis tickets".
+                  <CheckCircle2 size={16} /> Ticket submitted. You can view it in "My tickets".
                 </div>
               )}
               <form className="soporte-form" onSubmit={handleSubmit}>
-                <label className="soporte-label">Categoría</label>
+                <label className="soporte-label">Category</label>
                 <select className="input soporte-select" value={category} onChange={e => setCategory(e.target.value)} disabled={saving}>
                   {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                 </select>
-                <label className="soporte-label">Título</label>
-                <input className="input" placeholder="Resumen breve del problema…" value={title} onChange={e => setTitle(e.target.value)} disabled={saving} />
-                <label className="soporte-label">Descripción</label>
+                <label className="soporte-label">Title</label>
+                <input className="input" placeholder="Brief summary of the issue…" value={title} onChange={e => setTitle(e.target.value)} disabled={saving} />
+                <label className="soporte-label">Description</label>
                 <textarea
                   className="input soporte-textarea"
-                  placeholder="Explica el problema con todo el detalle posible."
+                  placeholder="Explain the problem in as much detail as possible."
                   value={description}
                   onChange={e => setDescription(e.target.value)}
                   rows={5}
@@ -236,7 +236,7 @@ export const SoportePanel: React.FC = () => {
                 {error && <span className="soporte-error">{error}</span>}
                 <div className="soporte-form-actions">
                   <button type="submit" className="btn btn-primary" disabled={saving || !title.trim() || !description.trim()}>
-                    {saving ? "Enviando…" : "Enviar ticket"}
+                    {saving ? "Sending…" : "Submit ticket"}
                   </button>
                 </div>
               </form>
@@ -248,15 +248,15 @@ export const SoportePanel: React.FC = () => {
       {/* ── USER TICKET HISTORY ── */}
       {view === "history" && (
         <div className="soporte-content">
-          {!user ? noAuthMessage("ver tus tickets") : (
+          {!user ? noAuthMessage("view your tickets") : (
             <>
-              {loading && <div className="soporte-empty">Cargando…</div>}
+              {loading && <div className="soporte-empty">Loading…</div>}
               {!loading && tickets.length === 0 && (
                 <div className="soporte-empty-state">
                   <LifeBuoy size={40} className="soporte-empty-icon" />
-                  <div className="soporte-empty-title">No has enviado ningún ticket</div>
-                  <div className="soporte-empty-sub">Cuando envíes un ticket aparecerá aquí.</div>
-                  <button className="btn btn-primary" style={{ marginTop: 16 }} onClick={() => setView("form")}>Crear ticket</button>
+                  <div className="soporte-empty-title">You have not submitted any tickets</div>
+                  <div className="soporte-empty-sub">When you submit a ticket it will appear here.</div>
+                  <button className="btn btn-primary" style={{ marginTop: 16 }} onClick={() => setView("form")}>Create ticket</button>
                 </div>
               )}
 
@@ -277,7 +277,7 @@ export const SoportePanel: React.FC = () => {
                       <div className="ticket-card-right">
                         <span className="ticket-category">{catLabel}</span>
                         <span className="ticket-date">{formatDate(t.createdAt)}</span>
-                        <button className="ticket-expand-btn" title={isOpen ? "Contraer" : "Expandir"}>
+                        <button className="ticket-expand-btn" title={isOpen ? "Collapse" : "Expand"}>
                           {isOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                         </button>
                       </div>
@@ -288,15 +288,15 @@ export const SoportePanel: React.FC = () => {
                         <p className="ticket-description">{t.description}</p>
 
                         {/* Thread */}
-                        {isLoading && <div className="ticket-thread-loading">Cargando conversación…</div>}
+                        {isLoading && <div className="ticket-thread-loading">Loading conversation…</div>}
 
                         {!isLoading && replies.length > 0 && (
                           <div className="ticket-thread">
                             {replies.map(r => (
                               <div key={r.id} className={`ticket-thread-msg${r.isStaff ? " staff" : " user-msg"}`}>
                                 <div className="ticket-thread-author">
-                                  {r.isStaff && <span className="ticket-thread-badge">Soporte</span>}
-                                  <span className="ticket-thread-name">{r.authorName ?? (r.isStaff ? "Soporte" : "Tú")}</span>
+                                  {r.isStaff && <span className="ticket-thread-badge">Support</span>}
+                                  <span className="ticket-thread-name">{r.authorName ?? (r.isStaff ? "Support" : "You")}</span>
                                   <span className="ticket-thread-date">{formatDate(r.createdAt)}</span>
                                 </div>
                                 <p className="ticket-thread-text">{r.text}</p>
@@ -310,7 +310,7 @@ export const SoportePanel: React.FC = () => {
                           <div className="ticket-reply-box">
                             <textarea
                               className="input ticket-reply-input"
-                              placeholder="Escribe una respuesta…"
+                              placeholder="Write a reply…"
                               rows={2}
                               value={replyTexts[t.id] ?? ""}
                               onChange={e => setReplyTexts(prev => ({ ...prev, [t.id]: e.target.value }))}
@@ -321,14 +321,14 @@ export const SoportePanel: React.FC = () => {
                               onClick={() => handleUserReply(t.id)}
                               disabled={sendingReply[t.id] || !replyTexts[t.id]?.trim()}
                             >
-                              <Send size={13} /> {sendingReply[t.id] ? "Enviando…" : "Responder"}
+                              <Send size={13} /> {sendingReply[t.id] ? "Sending…" : "Reply"}
                             </button>
                           </div>
                         )}
 
                         <div className="ticket-card-footer">
                           <button className="btn btn-outline btn-sm ticket-delete-btn" onClick={() => handleDelete(t.id)}>
-                            <Trash2 size={13} /> Eliminar
+                            <Trash2 size={13} /> Delete
                           </button>
                         </div>
                       </div>
@@ -344,11 +344,11 @@ export const SoportePanel: React.FC = () => {
       {/* ── STAFF QUEUE ── */}
       {view === "cola" && isSupport && (
         <div className="soporte-content soporte-staff">
-          {!user ? noAuthMessage("acceder a la cola") : (
+          {!user ? noAuthMessage("access the queue") : (
             staffDetail ? (
               <div className="staff-detail">
                 <button className="staff-detail-back btn btn-outline btn-sm" onClick={() => setStaffDetail(null)}>
-                  ← Volver
+                  ← Back
                 </button>
                 <div className="staff-detail-header">
                   <div className="staff-detail-meta">
@@ -372,7 +372,7 @@ export const SoportePanel: React.FC = () => {
                 <p className="staff-detail-description">{staffDetail.ticket.description}</p>
 
                 <div className="staff-status-row">
-                  <span className="staff-status-label">Cambiar estado:</span>
+                  <span className="staff-status-label">Change status:</span>
                   {TICKET_STATUSES.map(s => (
                     <button
                       key={s.value}
@@ -389,8 +389,8 @@ export const SoportePanel: React.FC = () => {
                   {staffDetail.replies.map(r => (
                     <div key={r.id} className={`staff-thread-msg${r.isStaff ? " staff" : " user"}`}>
                       <div className="staff-thread-author">
-                        {r.isStaff && <span className="staff-thread-badge">Soporte</span>}
-                        <span className="staff-thread-name">{r.authorName ?? "Usuario"}</span>
+                        {r.isStaff && <span className="staff-thread-badge">Support</span>}
+                        <span className="staff-thread-name">{r.authorName ?? "User"}</span>
                         <span className="staff-thread-date">{formatDate(r.createdAt)}</span>
                       </div>
                       <p className="staff-thread-text">{r.text}</p>
@@ -412,22 +412,22 @@ export const SoportePanel: React.FC = () => {
                     onClick={handleStaffReply}
                     disabled={staffDetail.replying || !staffDetail.replyText.trim()}
                   >
-                    <Send size={14} /> {staffDetail.replying ? "Enviando…" : "Responder"}
+                    <Send size={14} /> {staffDetail.replying ? "Sending…" : "Reply"}
                   </button>
                 </div>
               </div>
             ) : (
               <>
                 <div className="staff-queue-header">
-                  <span className="staff-queue-title">Cola de soporte</span>
+                  <span className="staff-queue-title">Support queue</span>
                   <span className="staff-queue-count">{tickets.length} ticket{tickets.length !== 1 ? "s" : ""}</span>
                 </div>
-                {loading && <div className="soporte-empty">Cargando…</div>}
+                {loading && <div className="soporte-empty">Loading…</div>}
                 {!loading && tickets.length === 0 && (
                   <div className="soporte-empty-state">
                     <Inbox size={40} className="soporte-empty-icon" />
-                    <div className="soporte-empty-title">No hay tickets pendientes</div>
-                    <div className="soporte-empty-sub">Cuando los usuarios envíen tickets aparecerán aquí.</div>
+                    <div className="soporte-empty-title">No pending tickets</div>
+                    <div className="soporte-empty-sub">When users submit tickets they will appear here.</div>
                   </div>
                 )}
                 {!loading && tickets.map(t => {

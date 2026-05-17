@@ -77,7 +77,7 @@ public class PresenceCheckService
         var warnSec = _settings.PresenceCheckWarningSeconds;
         _logger.LogInformation("PresenceCheck: aviso {Sec} s para {User}", warnSec, nextRequester);
         _ = Task.Run(() => _chat.SendChatMessageAsync(nextRequester,
-            $"¡tu canción es la próxima! Escribe !aqui para confirmar tu presencia ({warnSec} s)"));
+            $"your song is next! Type !aqui to confirm your presence ({warnSec}s)"));
     }
 
     /// <summary>
@@ -133,7 +133,7 @@ public class PresenceCheckService
 
         var confirmSec = _settings.PresenceCheckConfirmSeconds;
         await _chat.SendChatMessageAsync(requester,
-            $"¡tu canción está sonando! Escribe !aqui para confirmar ({confirmSec} s)", null, ct);
+            $"your song is playing! Type !aqui to confirm ({confirmSec}s)", null, ct);
 
         try
         {
@@ -147,7 +147,7 @@ public class PresenceCheckService
             // Sin confirmación — skipear
             _logger.LogInformation("PresenceCheck: {User} no confirmó presencia, salteando canción", requester);
             await _chat.SendChatMessageAsync(requester,
-                $"no confirmó presencia, salteando canción", null, ct);
+                $"did not confirm presence, skipping song", null, ct);
 
             if (SkipCurrentSong != null)
                 await SkipCurrentSong();

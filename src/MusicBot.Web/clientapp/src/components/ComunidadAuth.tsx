@@ -16,10 +16,10 @@ export const ComunidadAuth: React.FC<Props> = ({ user }) => {
     try {
       await communityService.signIn();
     } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : "Error al iniciar sesión";
+      const msg = e instanceof Error ? e.message : "Error signing in";
       // Ignore user-cancelled popup
       if (!msg.includes("popup-closed") && !msg.includes("cancelled")) {
-        setError("No se pudo iniciar sesión. Inténtalo de nuevo.");
+        setError("Could not sign in. Please try again.");
       }
     } finally { setBusy(false); }
   };
@@ -42,7 +42,7 @@ export const ComunidadAuth: React.FC<Props> = ({ user }) => {
           <span className="comm-auth-name">{user.displayName ?? user.email}</span>
           <span className="comm-auth-email">{user.email}</span>
         </div>
-        <button className="comm-auth-signout" onClick={handleSignOut} disabled={busy} title="Cerrar sesión">
+        <button className="comm-auth-signout" onClick={handleSignOut} disabled={busy} title="Sign out">
           {busy ? <Loader size={14} className="spin" /> : <LogOut size={14} />}
         </button>
       </div>
@@ -53,14 +53,14 @@ export const ComunidadAuth: React.FC<Props> = ({ user }) => {
     <div className="comm-auth-bar comm-auth-bar--out">
       <div className="comm-auth-prompt">
         <span className="comm-auth-prompt-text">
-          Inicia sesión para votar en solicitudes y enviar tickets
+          Sign in to vote on requests and submit tickets
         </span>
         {error && <span className="comm-auth-error">{error}</span>}
       </div>
       <button className="btn btn-primary comm-auth-btn" onClick={handleSignIn} disabled={busy}>
         {busy
-          ? <><Loader size={14} className="spin" /> Iniciando…</>
-          : <><LogIn size={14} /> Iniciar sesión con Google</>
+          ? <><Loader size={14} className="spin" /> Signing in…</>
+          : <><LogIn size={14} /> Sign in with Google</>
         }
       </button>
     </div>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Player + Cola (Vertical) – MusicBot</title>
+  <title>Player + Queue (Vertical) – MusicBot</title>
   <script src="../shared/theme.js"></script>
   <link rel="stylesheet" href="../shared/overlay.css">
   <style>
@@ -164,7 +164,7 @@
       </div>
       <div id="pv-status" class="pv-status">
         <div id="pv-dot" class="pv-dot"></div>
-        <span id="pv-status-text">Reproduciendo</span>
+        <span id="pv-status-text">Playing</span>
       </div>
       <div id="pv-title"  class="pv-title"></div>
       <div id="pv-artist" class="pv-artist"></div>
@@ -179,11 +179,11 @@
     <!-- Queue -->
     <div class="pv-queue">
       <div class="pv-queue-header">
-        <span>♫</span><span>Cola</span>
+        <span>♫</span><span>Queue</span>
         <span id="pv-count" class="pv-queue-count">0</span>
       </div>
       <div id="pv-list" class="pv-queue-list">
-        <div class="pv-empty">Sin canciones en cola</div>
+        <div class="pv-empty">No songs in queue</div>
       </div>
     </div>
   </div>
@@ -219,7 +219,7 @@
       pvCover.src=hasCover?song.coverUrl:"";
       pvCover.onerror=hasCover?()=>{pvVinyl.classList.add("no-cover");pvCover.onerror=null;}:null;
       pvVinyl.classList.toggle("playing",playing); pvVinyl.classList.toggle("paused",!playing);
-      pvDot.classList.toggle("paused",!playing); pvStatusText.textContent=playing?"Reproduciendo":"Pausado";
+      pvDot.classList.toggle("paused",!playing); pvStatusText.textContent=playing?"Playing":"Paused";
       pvTitle.textContent=song.title; pvArtist.textContent=song.artist;
       if(rb){pvReq.innerHTML=`${badge(pl)} ♪ ${esc(rb)}`;pvReq.classList.remove("hidden");}else pvReq.classList.add("hidden");
     }
@@ -253,7 +253,7 @@
 
       if(nowSong){
         if(currentUri!==nowSong.spotifyUri){applyNP(nowSong,np.item,isPlaying);currentUri=nowSong.spotifyUri;}
-        else{pvVinyl.classList.toggle("playing",isPlaying);pvVinyl.classList.toggle("paused",!isPlaying);pvDot.classList.toggle("paused",!isPlaying);pvStatusText.textContent=isPlaying?"Reproduciendo":"Pausado";}
+        else{pvVinyl.classList.toggle("playing",isPlaying);pvVinyl.classList.toggle("paused",!isPlaying);pvDot.classList.toggle("paused",!isPlaying);pvStatusText.textContent=isPlaying?"Playing":"Paused";}
       }
 
       const total=upcoming.length+(nowSong?1:0); pvCount.textContent=total;
@@ -287,7 +287,7 @@
           progressMs=s.progressMs||0;isPlaying=s.isPlaying||false;
           const sg=s.spotifyTrack||(s.item&&s.item.song);durationMs=sg?sg.durationMs:0;
           isPlaying?startTick():stopTick();renderBar();updateMiniBar();
-          if(sg&&currentUri===sg.spotifyUri){pvVinyl.classList.toggle("playing",isPlaying);pvVinyl.classList.toggle("paused",!isPlaying);pvDot.classList.toggle("paused",!isPlaying);pvStatusText.textContent=isPlaying?"Reproduciendo":"Pausado";}
+          if(sg&&currentUri===sg.spotifyUri){pvVinyl.classList.toggle("playing",isPlaying);pvVinyl.classList.toggle("paused",!isPlaying);pvDot.classList.toggle("paused",!isPlaying);pvStatusText.textContent=isPlaying?"Playing":"Paused";}
         });
     conn.start();
   </script>

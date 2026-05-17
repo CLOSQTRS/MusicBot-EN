@@ -71,7 +71,7 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
       const list = await api.getPlaylistSongs(id);
       setSongs(list);
     } catch {
-      showMsg("Error al cargar canciones", true);
+      showMsg("Error loading songs", true);
     } finally {
       setLoadingSongs(false);
     }
@@ -98,7 +98,7 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
       setSelectedId(p.id);
       setSongs([]);
     } catch (ex: unknown) {
-      showMsg(ex instanceof Error ? ex.message : "Error al crear lista", true);
+      showMsg(ex instanceof Error ? ex.message : "Error creating playlist", true);
     } finally {
       setCreating(false);
     }
@@ -107,14 +107,14 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
   // ── Delete playlist ────────────────────────────────────────────────────────
 
   const handleDelete = async (id: number, name: string) => {
-    const ok = await confirm({ title: `¿Eliminar "${name}"?`, message: "Esta acción no se puede deshacer.", confirmText: "Eliminar", danger: true });
+    const ok = await confirm({ title: `Delete "${name}"?`, message: "This action cannot be undone.", confirmText: "Delete", danger: true });
     if (!ok) return;
     try {
       await api.deletePlaylist(id);
       if (selectedId === id) { setSelectedId(null); setSongs([]); }
       await loadPlaylists();
     } catch {
-      showMsg("Error al eliminar lista", true);
+      showMsg("Error deleting playlist", true);
     }
   };
 
@@ -127,7 +127,7 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
       setRenamingId(null);
       await loadPlaylists();
     } catch (ex: unknown) {
-      showMsg(ex instanceof Error ? ex.message : "Error al renombrar", true);
+      showMsg(ex instanceof Error ? ex.message : "Error renaming", true);
     }
   };
 
@@ -142,9 +142,9 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
     try {
       const hits = await api.search(query.trim(), 10);
       setResults(hits);
-      if (hits.length === 0) setSearchMsg("Sin resultados");
+      if (hits.length === 0) setSearchMsg("No results");
     } catch {
-      setSearchMsg("Error al buscar");
+      setSearchMsg("Error searching");
     } finally {
       setSearching(false);
     }
@@ -154,11 +154,11 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
     if (selectedId == null) return;
     try {
       await api.addPlaylistSong(selectedId, song);
-      showMsg(`✓ "${song.title}" agregada`);
+      showMsg(`✓ "${song.title}" added`);
       await loadSongs(selectedId);
       await loadPlaylists();
     } catch (ex: unknown) {
-      showMsg(ex instanceof Error ? ex.message : "Error al agregar", true);
+      showMsg(ex instanceof Error ? ex.message : "Error adding", true);
     }
   };
 
@@ -178,7 +178,7 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
     try {
       await api.reorderPlaylistSong(selectedId, uri, toIndex);
     } catch {
-      showMsg("Error al reordenar", true);
+      showMsg("Error reordering", true);
       await loadSongs(selectedId);
     }
   };
@@ -192,7 +192,7 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
       setSongs(s => s.filter(x => x.spotifyUri !== uri));
       await loadPlaylists();
     } catch {
-      showMsg("Error al eliminar canción", true);
+      showMsg("Error removing song", true);
     }
   };
 
@@ -204,12 +204,12 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
     setImporting(true);
     try {
       const res = await api.importPlaylistSongs(selectedId, importUrl.trim());
-      showMsg(`✓ ${res.added} canciones importadas de ${res.total}`);
+      showMsg(`✓ ${res.added} songs imported from ${res.total}`);
       setImportUrl("");
       await loadSongs(selectedId);
       await loadPlaylists();
     } catch (ex: unknown) {
-      showMsg(ex instanceof Error ? ex.message : "Error al importar", true);
+      showMsg(ex instanceof Error ? ex.message : "Error importing", true);
     } finally {
       setImporting(false);
     }
@@ -225,7 +225,7 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
       await loadPlaylists();
       onPlaylistActivated?.();
     } catch (ex: unknown) {
-      showMsg(ex instanceof Error ? ex.message : "Error al reproducir", true);
+      showMsg(ex instanceof Error ? ex.message : "Error playing", true);
     } finally {
       setActivating(false);
     }
@@ -234,10 +234,10 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
   const handleDeactivate = async () => {
     try {
       await api.deactivatePlaylist();
-      showMsg("Lista de reproducción detenida");
+      showMsg("Playlist stopped");
       await loadPlaylists();
     } catch {
-      showMsg("Error al detener la lista", true);
+      showMsg("Error stopping playlist", true);
     }
   };
 
@@ -250,14 +250,14 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
       {/* ── Left: playlist list ───────────────────────────────────────── */}
       <div className="playlist-sidebar">
         <div className="playlist-sidebar-header">
-          <span className="queue-section-label" style={{ marginBottom: 0 }}>Mis listas</span>
+          <span className="queue-section-label" style={{ marginBottom: 0 }}>My playlists</span>
         </div>
 
         {/* Create new */}
         <form className="playlist-create-form" onSubmit={handleCreate}>
           <input
             className="input input-sm"
-            placeholder="Nueva lista…"
+            placeholder="New playlist…"
             value={newName}
             onChange={e => setNewName(e.target.value)}
             disabled={creating}
@@ -269,10 +269,10 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
         </form>
 
         {loadingList ? (
-          <div className="lib-empty" style={{ padding: "24px 0" }}>Cargando…</div>
+          <div className="lib-empty" style={{ padding: "24px 0" }}>Loading…</div>
         ) : playlists.length === 0 ? (
           <div className="lib-empty" style={{ padding: "24px 12px", fontSize: 13 }}>
-            No hay listas. Crea una arriba.
+            No playlists. Create one above.
           </div>
         ) : (
           <div className="playlist-list">
@@ -301,21 +301,21 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
                 ) : (
                   <>
                     <div className="playlist-list-item-info">
-                      {p.isActive && <span className="playlist-active-dot" title="Reproduciendo" />}
+                      {p.isActive && <span className="playlist-active-dot" title="Playing" />}
                       <span className="playlist-list-item-name">{p.name}</span>
                       <span className="playlist-list-item-count">{p.songCount}</span>
                     </div>
                     <div className="playlist-list-item-actions" onClick={e => e.stopPropagation()}>
                       <button
                         className="btn-icon-muted"
-                        title="Renombrar"
+                        title="Rename"
                         onClick={() => { setRenamingId(p.id); setRenameValue(p.name); }}
                       >
                         ✏
                       </button>
                       <button
                         className="btn-icon-danger"
-                        title="Eliminar"
+                        title="Remove"
                         onClick={() => handleDelete(p.id, p.name)}
                       >
                         ✕
@@ -332,19 +332,19 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
       {/* ── Right: playlist detail ────────────────────────────────────── */}
       <div className="playlist-detail">
         {selectedPlaylist == null ? (
-          <div className="lib-empty">Selecciona una lista para ver su contenido</div>
+          <div className="lib-empty">Select a playlist to view its contents</div>
         ) : (
           <>
             {/* Header */}
             <div className="playlist-detail-header">
               <div className="playlist-detail-title">
                 <span className="tab-pane-title" style={{ fontSize: 16 }}>{selectedPlaylist.name}</span>
-                <span className="count-chip">{selectedPlaylist.songCount} canciones</span>
+                <span className="count-chip">{selectedPlaylist.songCount} songs</span>
               </div>
               <div className="playlist-detail-actions">
                 {selectedPlaylist.isActive ? (
                   <button className="btn btn-sm btn-danger-outline" onClick={handleDeactivate}>
-                    ⏹ Detener
+                    ⏹ Stop
                   </button>
                 ) : (
                   <button
@@ -352,7 +352,7 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
                     onClick={() => handlePlay(selectedPlaylist.id)}
                     disabled={activating || selectedPlaylist.songCount === 0}
                   >
-                    {activating ? "Iniciando…" : "▶ Reproducir lista"}
+                    {activating ? "Starting…" : "▶ Play playlist"}
                   </button>
                 )}
               </div>
@@ -366,11 +366,11 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
 
             {/* Import from URL */}
             <div className="autoqueue-add-section">
-              <div className="queue-section-label">Importar desde YouTube</div>
+              <div className="queue-section-label">Import from YouTube</div>
               <form className="form-row" onSubmit={handleImport}>
                 <input
                   className="input"
-                  placeholder="URL de lista de YouTube…"
+                  placeholder="YouTube playlist URL…"
                   value={importUrl}
                   onChange={e => setImportUrl(e.target.value)}
                   disabled={importing}
@@ -382,18 +382,18 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
                   style={{ whiteSpace: "nowrap" }}
                   disabled={importing || !importUrl.trim()}
                 >
-                  {importing ? "Importando…" : "Importar"}
+                  {importing ? "Importing…" : "Import"}
                 </button>
               </form>
             </div>
 
             {/* Search to add */}
             <div className="autoqueue-add-section">
-              <div className="queue-section-label">Buscar y agregar canción</div>
+              <div className="queue-section-label">Search and add song</div>
               <form className="form-row" onSubmit={handleSearch}>
                 <input
                   className="input"
-                  placeholder="Nombre, artista…"
+                  placeholder="Name, artist…"
                   value={query}
                   onChange={e => { setQuery(e.target.value); setSearchMsg(""); }}
                   autoComplete="off"
@@ -404,7 +404,7 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
                   style={{ whiteSpace: "nowrap" }}
                   disabled={searching || !query.trim()}
                 >
-                  {searching ? "Buscando…" : "Buscar"}
+                  {searching ? "Searching…" : "Search"}
                 </button>
               </form>
 
@@ -426,11 +426,11 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
             </div>
 
             {/* Song list */}
-            <div className="queue-section-label">Canciones</div>
+            <div className="queue-section-label">Songs</div>
             {loadingSongs ? (
-              <div className="lib-empty">Cargando…</div>
+              <div className="lib-empty">Loading…</div>
             ) : songs.length === 0 ? (
-              <div className="lib-empty">Lista vacía. Importa o busca canciones arriba.</div>
+              <div className="lib-empty">Empty playlist. Import or search songs above.</div>
             ) : (
               <div className="autoqueue-list">
                 {songs.map((song, i) => {
@@ -446,7 +446,7 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
                       onDrop={e => { e.preventDefault(); if (dragSongUri && dragSongIdxRef.current !== i) handleReorderSong(dragSongUri, i); setDragSongUri(null); setDropSongIdx(null); }}
                       onDragEnd={() => { setDragSongUri(null); setDropSongIdx(null); }}
                     >
-                      <span className="queue-drag-handle" title="Arrastrar para reordenar">⠿</span>
+                      <span className="queue-drag-handle" title="Drag to reorder">⠿</span>
                       <span style={{ fontSize: 11, color: "var(--text-muted)", minWidth: 22, textAlign: "right" }}>
                         {i + 1}
                       </span>
@@ -459,7 +459,7 @@ export const PlaylistLibraryPanel: React.FC<Props> = ({ onPlaylistActivated }) =
                       </div>
                       <button
                         className="btn-icon-danger"
-                        title="Quitar de lista"
+                        title="Remove from playlist"
                         onClick={() => handleRemoveSong(song.spotifyUri)}
                       >
                         ✕

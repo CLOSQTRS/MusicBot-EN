@@ -14,10 +14,10 @@ export const ImportPlaylist: React.FC = () => {
     setMessage(null);
     try {
       const res = await api.importPlaylist(url.trim(), requestedBy);
-      setMessage({ text: `✓ ${res.added} canciones agregadas (${res.skipped} omitidas de ${res.total})`, ok: true });
+      setMessage({ text: `✓ ${res.added} songs added (${res.skipped} skipped from ${res.total})`, ok: true });
       if (res.added > 0) setUrl("");
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Error al importar playlist";
+      const msg = err instanceof Error ? err.message : "Error importing playlist";
       setMessage({ text: msg, ok: false });
     } finally {
       setLoading(false);
@@ -27,13 +27,13 @@ export const ImportPlaylist: React.FC = () => {
   return (
     <form className="import-playlist-form" onSubmit={handleImport}>
       <p className="import-playlist-hint">
-        Pega una URL de playlist de YouTube o Spotify para agregar todas sus canciones a la cola (máx. 50).
+        Paste a YouTube or Spotify playlist URL to add all its songs to the queue (max. 50).
       </p>
       <div className="form-row">
         <input
           type="text"
           className="input"
-          placeholder="https://www.youtube.com/playlist?list=… o https://open.spotify.com/playlist/…"
+          placeholder="https://www.youtube.com/playlist?list=… or https://open.spotify.com/playlist/…"
           value={url}
           onChange={e => setUrl(e.target.value)}
           disabled={loading}
@@ -41,7 +41,7 @@ export const ImportPlaylist: React.FC = () => {
         <input
           type="text"
           className="input input-sm"
-          placeholder="Solicitado por"
+          placeholder="Requested by"
           value={requestedBy}
           onChange={e => setRequestedBy(e.target.value)}
         />
@@ -51,7 +51,7 @@ export const ImportPlaylist: React.FC = () => {
           style={{ width: "100%" }}
           disabled={loading || !url.trim()}
         >
-          {loading ? "Importando…" : "Importar playlist"}
+          {loading ? "Importing…" : "Import playlist"}
         </button>
       </div>
       {message && (
