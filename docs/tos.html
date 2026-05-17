@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MusicBot — Terms of Service</title>
+  <meta name="description" content="MusicBot terms of service. Free, open source Windows desktop app for managing song requests during live streams." />
+
+  <!-- Canonical & hreflang -->
+  <link rel="canonical" href="https://overabstractor.github.io/MusicBot/tos.html" />
+  <link rel="alternate" hreflang="en" href="https://overabstractor.github.io/MusicBot/tos.html" />
+  <link rel="alternate" hreflang="es" href="https://overabstractor.github.io/MusicBot/es/tos.html" />
+  <link rel="alternate" hreflang="x-default" href="https://overabstractor.github.io/MusicBot/tos.html" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://overabstractor.github.io/MusicBot/tos.html" />
+  <meta property="og:title" content="MusicBot — Terms of Service" />
+  <meta property="og:description" content="MusicBot is free and open source software. By using it you accept these terms." />
+  <meta property="og:site_name" content="MusicBot" />
+
+  <style>
+    :root {
+      --bg: #0f0f14;
+      --surface: #1a1a24;
+      --border: rgba(255, 255, 255, 0.08);
+      --accent: #a78bfa;
+      --text: #e2e2f0;
+      --muted: #8888aa;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .nav-logo svg {
+      opacity: .85;
+    }
+
+    .nav-links { display: flex; gap: 16px; align-items: center; }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color .2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .lang-btn {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--muted) !important;
+    }
+    .lang-btn:hover { color: var(--text) !important; background: rgba(255,255,255,0.05); }
+
+    main {
+      flex: 1;
+      max-width: 760px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .doc-title {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .doc-date {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 36px 0 12px;
+      color: var(--text);
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    ul {
+      margin: 8px 0 12px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    li {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .highlight {
+      background: rgba(167, 139, 250, 0.08);
+      border: 1px solid rgba(167, 139, 250, 0.2);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+
+    .highlight p {
+      margin: 0;
+      color: var(--text);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--muted);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    footer a {
+      color: var(--muted);
+    }
+
+    footer a:hover {
+      color: var(--text);
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="11" fill="#7c6af7" opacity=".15" />
+        <path d="M9 17V7l10 3.5L9 14" fill="#a78bfa" />
+        <circle cx="7" cy="17" r="2.5" fill="#a78bfa" />
+      </svg>
+      MusicBot
+    </a>
+    <div class="nav-links">
+      <a href="tos.html">Terms</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="es/tos.html" class="lang-btn">ES</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="doc-title">Terms of Service</div>
+    <div class="doc-date">Last updated: April 2025</div>
+
+    <div class="highlight">
+      <p>MusicBot is free and open source software. By using it you accept these terms.</p>
+    </div>
+
+    <h2>1. Use of the software</h2>
+    <p>MusicBot is a Windows desktop application for managing song requests during live streams. You may use it free of charge, modify it and distribute it under the terms of the repository's license.</p>
+
+    <h2>2. Compliance with third-party services</h2>
+    <p>MusicBot integrates with external platforms. It is your responsibility to comply with each one's terms:</p>
+    <ul>
+      <li><strong>YouTube</strong> — audio playback is performed via yt-dlp. You must comply with <a
+          href="https://www.youtube.com/t/terms" target="_blank">YouTube's Terms of Service</a>.</li>
+      <li><strong>TikTok</strong> — connecting to TikTok Live chat is subject to <a
+          href="https://www.tiktok.com/legal/terms-of-service" target="_blank">TikTok's Terms</a>.</li>
+      <li><strong>Twitch</strong> — access to the Twitch API is subject to <a
+          href="https://www.twitch.tv/p/legal/terms-of-service/" target="_blank">Twitch's Terms of Service</a>.</li>
+      <li><strong>Kick</strong> — use of the Kick API is subject to its current terms of service.</li>
+    </ul>
+
+    <h2>3. Permitted use</h2>
+    <p>MusicBot is designed for personal use during live streams. The following are not permitted:</p>
+    <ul>
+      <li>Downloading or distributing copyrighted content in bulk.</li>
+      <li>Automating requests in a fraudulent or abusive manner.</li>
+      <li>Any activity that violates applicable laws in your jurisdiction.</li>
+    </ul>
+
+    <h2>4. No warranties</h2>
+    <p>MusicBot is provided "as is", without warranties of any kind. We do not guarantee continuous availability, compatibility with future versions of integrated platforms, or the absence of errors.</p>
+
+    <h2>5. Limitation of liability</h2>
+    <p>The developers of MusicBot shall not be liable for direct, indirect or incidental damages arising from the use or inability to use the software, including account suspensions on third-party platforms.</p>
+
+    <h2>6. Changes to the terms</h2>
+    <p>These terms may be updated. Changes will be reflected on this page with a new update date. Continued use of the software implies acceptance of the current terms.</p>
+  </main>
+
+  <footer>
+    <span>© 2025 MusicBot</span>
+    <a href="index.html">← Back to home</a>
+  </footer>
+
+</body>
+
+</html>

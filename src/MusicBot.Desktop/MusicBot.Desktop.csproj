@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>MusicBot.Desktop.Program</StartupObject>
+    <AssemblyName>MusicBot</AssemblyName>
+    <AssemblyTitle>MusicBot</AssemblyTitle>
+    <Product>MusicBot</Product>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="Resources\icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MusicBot.Web\MusicBot.Web.csproj" />
+    <ProjectReference Include="..\MusicBot.Core\MusicBot.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Markdig" Version="1.2.0" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.*" />
+    <PackageReference Include="Serilog" Version="4.*" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.*" />
+    <PackageReference Include="Velopack" Version="0.0.1298" />
+    <!--
+      Velopack 0.0.1298 está compilado contra NuGet.Versioning 6.14.0.116
+      y exige esa versión exacta al cargar VelopackApp.Run() para los hooks
+      de ciclo de vida (veloapp-install, veloapp-updated, veloapp-obsolete,
+      veloapp-uninstall). Sin este pin la cadena de dependencias resuelve a
+      6.8.x y el hook crashea con FileNotFoundException antes de llegar a
+      Main, rompiendo la instalación o el auto-update.
+    -->
+    <PackageReference Include="NuGet.Versioning" Version="6.14.0" />
+  </ItemGroup>
+
+</Project>
