@@ -107,3 +107,13 @@ API calls are all in `services/api.ts`. TypeScript interfaces for all API respon
 ## API Docs
 
 Interactive: `http://127.0.0.1:3050/scalar/v1` · OpenAPI JSON: `http://127.0.0.1:3050/openapi/v1.json`
+
+## Testing
+
+`dotnet test src/MusicBot.Tests` runs the unit tests (queue, command parsing, presence check, banned songs, kick votes, yt-dlp helpers).
+
+## Related repos
+
+All repos live as siblings in one `Code` folder, so these paths are relative to this repo.
+
+- This is the translated version of MusicBot. The upstream MusicBot repo is a fork and is not kept in the `Code` folder. No other repo here depends on it.
